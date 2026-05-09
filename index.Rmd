@@ -1,0 +1,56 @@
+---
+title: "index"
+author: "Lylia"
+date: "2026-05-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+Présentation générale du sujet.
+
+# Description des données
+
+- source des données
+- type de données
+- format
+- emprise spatiale
+- variables
+
+# Problématique
+
+Question étudiée.
+
+Objectifs de l’analyse.
+
+# Géotraitements vecteurs
+
+Description des traitements réalisés.
+
+## Schéma
+
+(insérer image)
+
+# Géotraitements rasters
+
+Description des traitements réalisés.
+
+## Schéma
+
+(insérer image)
+
+
+![](figure/schema GT Raster.png)
+
+
+# Jointures
+
+Description des jointures attributaires ou spatiales.
+
+# Conclusion
+
+Résultats obtenus et limites.

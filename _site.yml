@@ -1,0 +1,7 @@
+name: "projet-geomatique"
+navbar:
+  title: "Projet Géomatique"
+output_dir: "_site"
+output:
+  html_document:
+    theme: cosmo

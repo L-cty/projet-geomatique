@@ -11,4 +11,4 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 
-![](_site/index_files/figure-html/Schema GT Raster.png)
+![](index_files/figure-html/schema_vecteur.png)

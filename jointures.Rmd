@@ -1,0 +1,10 @@
+---
+title: "Jointures"
+author: "Lylia"
+date: "2026-05-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```

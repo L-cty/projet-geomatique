@@ -1,7 +1,25 @@
-name: "projet-geomatique"
+name: "fragmentation"
 navbar:
-  title: "Projet Géomatique"
+  title: "Fragmentation socio-spatiale"
+
+  left:
+    - text: "Accueil"
+      href: index.html
+
+    - text: "Données"
+      href: donnees.html
+
+    - text: "Vecteurs"
+      href: vecteurs.html
+
+    - text: "Rasters"
+      href: rasters.html
+
+    - text: "Jointures"
+      href: jointures.html
+
 output_dir: "_site"
+
 output:
   html_document:
     theme: cosmo

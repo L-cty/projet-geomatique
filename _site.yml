@@ -18,7 +18,7 @@ navbar:
     - text: "Jointures"
       href: jointures.html
 
-output_dir: "_site"
+output_dir: "docs"
 
 output:
   html_document:

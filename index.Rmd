@@ -51,7 +51,7 @@ Description des traitements réalisés.
 ## Schéma
 
 
-![](figure/schema GT Raster.png)
+![](figure/Découpage IRIS.png)
 
 
 # Jointures

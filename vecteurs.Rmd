@@ -10,4 +10,4 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-![](figure/Schema GT Vecteur.png)
+![](docs/index_files/figure-html/Schema GT Vecteur.png)

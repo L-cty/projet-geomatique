@@ -51,7 +51,7 @@ Description des traitements réalisés.
 ## Schéma
 
 
-![](figure/Découpage IRIS.png)
+![](docs/index_files/figure-html/Decoupage IRIS - Saint Denis.png)
 
 
 # Jointures

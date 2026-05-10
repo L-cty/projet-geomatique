@@ -9,6 +9,46 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r}
+library(sf)
+library(tmap)
+```
+
+# Lecture des données
+
+```{r}
+iris <- st_read("data/iris.shp")
+```
+
+# Sélection de Saint-Denis
+
+```{r}
+names(iris)
+```
+
+```{r}
+unique(iris$Nom_Officie.7)
+```
+
+```{r}
+iris_sd <- iris[iris$Nom_Officie.7 == "['Saint-Denis']", ]
+```
+
+```{r}
+print(iris_sd)
+```
+
+```{r}
+plot(st_geometry(iris_sd))
+
+buffer_sd <- st_buffer(iris_sd, dist = 500)
+
+```
+
+
+
+# Schéma
+
 Le géotraitement vectoriel constitue le cœur de notre analyse, car les données utilisées sont organisées à l’échelle des IRIS. Il repose sur plusieurs étapes permettant de transformer des données brutes en informations spatialisées interprétables. 
 
 ![](index_files/figure-html/schema_vecteur.png)

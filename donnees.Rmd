@@ -8,16 +8,31 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+# Importation des données
+
 ```{r}
-
 library(sf)
-
-iris <- st_read("data/iris.shp")
-
-print(iris)
-
+library(dplyr)
 ```
 
+# Lecture du shapefile IRIS
+
+```{r}
+iris <- st_read("data/iris.shp")
+```
+
+# Affichage des données
+
+```{r}
+print(iris)
+```
+
+# Affichage de la géométrie
+
+```{r}
+plot(st_geometry(iris))
+```
 
 
 Dans le cadre de notre analyse des inégalités socio-spatiales à Saint Denis, nous avons mobilisé plusieurs types de données : 

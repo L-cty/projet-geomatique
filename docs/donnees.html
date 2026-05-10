@@ -278,9 +278,14 @@ $(document).ready(function () {
 </div>
 
 
+<div id="importation-des-données" class="section level1">
+<h1>Importation des données</h1>
 <pre class="r"><code>library(sf)
-
-iris &lt;- st_read(&quot;data/iris.shp&quot;)</code></pre>
+library(dplyr)</code></pre>
+</div>
+<div id="lecture-du-shapefile-iris" class="section level1">
+<h1>Lecture du shapefile IRIS</h1>
+<pre class="r"><code>iris &lt;- st_read(&quot;data/iris.shp&quot;)</code></pre>
 <pre><code>## Reading layer `iris&#39; from data source 
 ##   `C:\Users\fchri\OneDrive\Bureau\One Drive de Lylia Christory\OneDrive\Documents\projet-geomatique\data\iris.shp&#39; 
 ##   using driver `ESRI Shapefile&#39;
@@ -289,6 +294,9 @@ iris &lt;- st_read(&quot;data/iris.shp&quot;)</code></pre>
 ## Dimension:     XY
 ## Bounding box:  xmin: 2.28833 ymin: 48.80725 xmax: 2.603314 ymax: 49.01233
 ## Geodetic CRS:  WGS 84</code></pre>
+</div>
+<div id="affichage-des-données" class="section level1">
+<h1>Affichage des données</h1>
 <pre class="r"><code>print(iris)</code></pre>
 <pre><code>## Simple feature collection with 614 features and 30 fields
 ## Geometry type: MULTIPOLYGON
@@ -373,6 +381,11 @@ iris &lt;- st_read(&quot;data/iris.shp&quot;)</code></pre>
 ## 8            &lt;NA&gt; MULTIPOLYGON (((2.51108 48....
 ## 9            &lt;NA&gt; MULTIPOLYGON (((2.504991 48...
 ## 10           &lt;NA&gt; MULTIPOLYGON (((2.478301 48...</code></pre>
+</div>
+<div id="affichage-de-la-géométrie" class="section level1">
+<h1>Affichage de la géométrie</h1>
+<pre class="r"><code>plot(st_geometry(iris))</code></pre>
+<p><img src="donnees_files/figure-html/unnamed-chunk-4-1.png" alt="" width="672" /></p>
 <p>Dans le cadre de notre analyse des inégalités socio-spatiales à Saint
 Denis, nous avons mobilisé plusieurs types de données :</p>
 <p>Contours des IRIS (IGN) :</p>
@@ -404,6 +417,7 @@ données Filosofi (revenus)</li>
 <li>Produire des cartes choroplèthes</li>
 <li>Analyser la répartition spatiale des indicateurs</li>
 </ul>
+</div>
 
 
 

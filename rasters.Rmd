@@ -9,6 +9,17 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+![](index_files/image_sat_saint_denis.png)
+
+```{r}
+library(terra)
+
+r <- rast("index_files/image_sat_saint_denis.png")
+
+plot(r)
+```
+
+
 Bien que notre analyse repose principalement sur des données vectorielles, un traitement raster peut être réalisé à partir des données IRIS afin d’obtenir une représentation continue des inégalités.
 
 

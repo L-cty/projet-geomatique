@@ -278,6 +278,13 @@ $(document).ready(function () {
 </div>
 
 
+<p><img src="index_files/image_sat_saint_denis.png" /></p>
+<pre class="r"><code>library(terra)</code></pre>
+<pre><code>## terra 1.9.11</code></pre>
+<pre class="r"><code>r &lt;- rast(&quot;index_files/image_sat_saint_denis.png&quot;)</code></pre>
+<pre><code>## Warning: [rast] unknown extent</code></pre>
+<pre class="r"><code>plot(r)</code></pre>
+<p><img src="rasters_files/figure-html/unnamed-chunk-1-1.png" alt="" width="672" /></p>
 <p>Bien que notre analyse repose principalement sur des données
 vectorielles, un traitement raster peut être réalisé à partir des
 données IRIS afin d’obtenir une représentation continue des

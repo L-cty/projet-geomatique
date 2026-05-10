@@ -17,6 +17,9 @@ navbar:
 
     - text: "Jointures"
       href: jointures.html
+      
+    - text: "Conclusion"
+      href: conclusion.html
 
 output_dir: "docs"
 

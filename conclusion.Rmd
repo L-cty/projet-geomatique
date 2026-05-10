@@ -1,0 +1,15 @@
+---
+title: "Conclusion"
+author: "Lylia"
+date: "2026-05-10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+Les résultats de l’analyse des revenus à Saint-Denis mettent en évidence des inégalités marquées à l’échelle intra-urbaine. Les différentes cartes réalisées à partir des données FILOSOFI montrent une forte variation des niveaux de revenus, du taux de pauvreté et des inégalités internes (indice de Gini) selon les IRIS. L’espace communal apparaît donc très contrasté sur le plan social. Les cartes de taux de pauvreté révèlent une concentration des situations les plus précaires principalement dans les secteurs situés au sud, à l’ouest ainsi que dans certaines zones centrales de la commune, où les valeurs peuvent atteindre près de 49 %. Ces espaces se caractérisent par une forte présence de ménages modestes, souvent liée à une concentration de logements sociaux et à des difficultés socio-économiques plus marquées. À l’inverse, les secteurs situés au nord et au nord-est présentent des taux de pauvreté plus faibles et des niveaux de revenus plus élevés, traduisant des conditions de vie relativement plus favorables. L’analyse de l’indice de Gini montre également que certains quartiers présentent une forte hétérogénéité sociale. Cela signifie que des populations aux niveaux de vie très différents coexistent au sein d’un même espace, notamment dans certains secteurs centraux. Cette situation peut s’expliquer par des opérations de renouvellement urbain qui attirent progressivement des populations plus aisées au sein de quartiers initialement populaires.Cette organisation spatiale traduit une forte fragmentation socio-spatiale. Elle se manifeste par la juxtaposition de territoires en difficulté et de secteurs plus favorisés, parfois très proches géographiquement. Cette structure reflète à la fois des héritages urbains liés à la présence historique de logements sociaux et des dynamiques plus récentes de transformation.Ces dynamiques sont particulièrement visibles dans certains secteurs comme La Plaine Saint-Denis, ancien espace industriel en reconversion, aujourd’hui marqué par l’arrivée d’activités économiques et de nouvelles populations dans le cadre des projets du Grand Paris. Ces transformations contribuent à renforcer les contrastes socio-spatiaux à l’échelle communale.
+
+Enfin, les écarts observés entre quartiers témoignent d’une recomposition progressive de la ville, où cohabitent des espaces en situation de fragilité sociale et des zones plus attractives, renforçant les contrastes internes à la commune.

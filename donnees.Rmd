@@ -8,6 +8,17 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+```{r}
+
+library(sf)
+
+iris <- st_read("data/iris.shp")
+
+print(iris)
+
+```
+
+
 
 Dans le cadre de notre analyse des inégalités socio-spatiales à Saint Denis, nous avons mobilisé plusieurs types de données : 
 

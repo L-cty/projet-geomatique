@@ -278,6 +278,101 @@ $(document).ready(function () {
 </div>
 
 
+<pre class="r"><code>library(sf)
+
+iris &lt;- st_read(&quot;data/iris.shp&quot;)</code></pre>
+<pre><code>## Reading layer `iris&#39; from data source 
+##   `C:\Users\fchri\OneDrive\Bureau\One Drive de Lylia Christory\OneDrive\Documents\projet-geomatique\data\iris.shp&#39; 
+##   using driver `ESRI Shapefile&#39;
+## Simple feature collection with 614 features and 30 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 2.28833 ymin: 48.80725 xmax: 2.603314 ymax: 49.01233
+## Geodetic CRS:  WGS 84</code></pre>
+<pre class="r"><code>print(iris)</code></pre>
+<pre><code>## Simple feature collection with 614 features and 30 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 2.28833 ymin: 48.80725 xmax: 2.603314 ymax: 49.01233
+## Geodetic CRS:  WGS 84
+## First 10 features:
+##    Annee Code_Offici       Nom_Officie Code_Offici.1         Nom_Officie.1 Code_Offici.2
+## 1   2024      [&#39;11&#39;] [&#39;Île-de-France&#39;]        [&#39;93&#39;] [&#39;Seine-Saint-Denis&#39;]       [&#39;932&#39;]
+## 2   2024      [&#39;11&#39;] [&#39;Île-de-France&#39;]        [&#39;93&#39;] [&#39;Seine-Saint-Denis&#39;]       [&#39;931&#39;]
+## 3   2024      [&#39;11&#39;] [&#39;Île-de-France&#39;]        [&#39;93&#39;] [&#39;Seine-Saint-Denis&#39;]       [&#39;931&#39;]
+## 4   2024      [&#39;11&#39;] [&#39;Île-de-France&#39;]        [&#39;93&#39;] [&#39;Seine-Saint-Denis&#39;]       [&#39;932&#39;]
+## 5   2024      [&#39;11&#39;] [&#39;Île-de-France&#39;]        [&#39;93&#39;] [&#39;Seine-Saint-Denis&#39;]       [&#39;932&#39;]
+## 6   2024      [&#39;11&#39;] [&#39;Île-de-France&#39;]        [&#39;93&#39;] [&#39;Seine-Saint-Denis&#39;]       [&#39;932&#39;]
+## 7   2024      [&#39;11&#39;] [&#39;Île-de-France&#39;]        [&#39;93&#39;] [&#39;Seine-Saint-Denis&#39;]       [&#39;932&#39;]
+## 8   2024      [&#39;11&#39;] [&#39;Île-de-France&#39;]        [&#39;93&#39;] [&#39;Seine-Saint-Denis&#39;]       [&#39;932&#39;]
+## 9   2024      [&#39;11&#39;] [&#39;Île-de-France&#39;]        [&#39;93&#39;] [&#39;Seine-Saint-Denis&#39;]       [&#39;932&#39;]
+## 10  2024      [&#39;11&#39;] [&#39;Île-de-France&#39;]        [&#39;93&#39;] [&#39;Seine-Saint-Denis&#39;]       [&#39;931&#39;]
+##    Nom_Officie.2 Code_Offici.3 Nom_Officie.3 Code_Offici.4 Nom_Officie.4 Code_Offici.5
+## 1  [&#39;Le Raincy&#39;]      [&#39;1112&#39;]    [&#39;Roissy&#39;]     [&#39;75056&#39;]     [&#39;Paris&#39;] [&#39;200054781&#39;]
+## 2    [&#39;Bobigny&#39;]      [&#39;1109&#39;]     [&#39;Paris&#39;]     [&#39;75056&#39;]     [&#39;Paris&#39;] [&#39;200054781&#39;]
+## 3    [&#39;Bobigny&#39;]      [&#39;1109&#39;]     [&#39;Paris&#39;]     [&#39;75056&#39;]     [&#39;Paris&#39;] [&#39;200054781&#39;]
+## 4  [&#39;Le Raincy&#39;]      [&#39;1112&#39;]    [&#39;Roissy&#39;]     [&#39;75056&#39;]     [&#39;Paris&#39;] [&#39;200054781&#39;]
+## 5  [&#39;Le Raincy&#39;]      [&#39;1109&#39;]     [&#39;Paris&#39;]     [&#39;75056&#39;]     [&#39;Paris&#39;] [&#39;200054781&#39;]
+## 6  [&#39;Le Raincy&#39;]      [&#39;1112&#39;]    [&#39;Roissy&#39;]     [&#39;75056&#39;]     [&#39;Paris&#39;] [&#39;200054781&#39;]
+## 7  [&#39;Le Raincy&#39;]      [&#39;1112&#39;]    [&#39;Roissy&#39;]     [&#39;75056&#39;]     [&#39;Paris&#39;] [&#39;200054781&#39;]
+## 8  [&#39;Le Raincy&#39;]      [&#39;1112&#39;]    [&#39;Roissy&#39;]     [&#39;75056&#39;]     [&#39;Paris&#39;] [&#39;200054781&#39;]
+## 9  [&#39;Le Raincy&#39;]      [&#39;1112&#39;]    [&#39;Roissy&#39;]     [&#39;75056&#39;]     [&#39;Paris&#39;] [&#39;200054781&#39;]
+## 10   [&#39;Bobigny&#39;]      [&#39;1109&#39;]     [&#39;Paris&#39;]     [&#39;75056&#39;]     [&#39;Paris&#39;] [&#39;200054781&#39;]
+##                   Nom_Officie.5 Code_Offici.6               Nom_Officie.6 Code_Offici.7
+## 1  [&#39;Métropole du Grand Paris&#39;] [&#39;200058097&#39;]    [&quot;Paris Terres d&#39;Envol&quot;]     [&#39;93073&#39;]
+## 2  [&#39;Métropole du Grand Paris&#39;] [&#39;200057875&#39;]            [&#39;Est Ensemble&#39;]     [&#39;93008&#39;]
+## 3  [&#39;Métropole du Grand Paris&#39;] [&#39;200057875&#39;]            [&#39;Est Ensemble&#39;]     [&#39;93053&#39;]
+## 4  [&#39;Métropole du Grand Paris&#39;] [&#39;200058097&#39;]    [&quot;Paris Terres d&#39;Envol&quot;]     [&#39;93073&#39;]
+## 5  [&#39;Métropole du Grand Paris&#39;] [&#39;200058790&#39;] [&#39;Grand Paris - Grand Est&#39;]     [&#39;93057&#39;]
+## 6  [&#39;Métropole du Grand Paris&#39;] [&#39;200058097&#39;]    [&quot;Paris Terres d&#39;Envol&quot;]     [&#39;93005&#39;]
+## 7  [&#39;Métropole du Grand Paris&#39;] [&#39;200058097&#39;]    [&quot;Paris Terres d&#39;Envol&quot;]     [&#39;93029&#39;]
+## 8  [&#39;Métropole du Grand Paris&#39;] [&#39;200058097&#39;]    [&quot;Paris Terres d&#39;Envol&quot;]     [&#39;93071&#39;]
+## 9  [&#39;Métropole du Grand Paris&#39;] [&#39;200058097&#39;]    [&quot;Paris Terres d&#39;Envol&quot;]     [&#39;93005&#39;]
+## 10 [&#39;Métropole du Grand Paris&#39;] [&#39;200057875&#39;]            [&#39;Est Ensemble&#39;]     [&#39;93010&#39;]
+##                  Nom_Officie.7 Code_Offici.8               Nom_Officie.8 Code_Offici.9
+## 1       [&#39;Tremblay-en-France&#39;]     [&#39;93073&#39;]      [&#39;Tremblay-en-France&#39;] [&#39;930730502&#39;]
+## 2                  [&#39;Bobigny&#39;]     [&#39;93008&#39;]                 [&#39;Bobigny&#39;] [&#39;930080101&#39;]
+## 3             [&#39;Noisy-le-Sec&#39;]     [&#39;93053&#39;]            [&#39;Noisy-le-Sec&#39;] [&#39;930530104&#39;]
+## 4       [&#39;Tremblay-en-France&#39;]     [&#39;93073&#39;]      [&#39;Tremblay-en-France&#39;] [&#39;930730403&#39;]
+## 5  [&#39;Les Pavillons-sous-Bois&#39;]     [&#39;93057&#39;] [&#39;Les Pavillons-sous-Bois&#39;] [&#39;930570109&#39;]
+## 6         [&#39;Aulnay-sous-Bois&#39;]     [&#39;93005&#39;]        [&#39;Aulnay-sous-Bois&#39;] [&#39;930050202&#39;]
+## 7                   [&#39;Drancy&#39;]     [&#39;93029&#39;]                  [&#39;Drancy&#39;] [&#39;930290801&#39;]
+## 8                   [&#39;Sevran&#39;]     [&#39;93071&#39;]                  [&#39;Sevran&#39;] [&#39;930710119&#39;]
+## 9         [&#39;Aulnay-sous-Bois&#39;]     [&#39;93005&#39;]        [&#39;Aulnay-sous-Bois&#39;] [&#39;930050804&#39;]
+## 10                   [&#39;Bondy&#39;]     [&#39;93010&#39;]                   [&#39;Bondy&#39;] [&#39;930100104&#39;]
+##              Nom_Officie.9      Nom_Officie.10      Nom_Officie.11 Code_Iso_31
+## 1   [&#39;Bois Saint-Denis 2&#39;]  BOIS SAINT-DENIS 2  bois saint-denis 2         FXX
+## 2         [&#39;Les Vignes 1&#39;]        LES VIGNES 1        les vignes 1         FXX
+## 3  [&#39;Centre Ville Gare 1&#39;] CENTRE VILLE GARE 1 centre ville gare 1         FXX
+## 4       [&#39;Centre Ville 3&#39;]      CENTRE VILLE 3      centre ville 3         FXX
+## 5          [&#39;Victor Hugo&#39;]         VICTOR HUGO         victor hugo         FXX
+## 6               [&#39;Nord 2&#39;]              NORD 2              nord 2         FXX
+## 7  [&quot;L&#39;Avenir Parisien 1&quot;] L&#39;AVENIR PARISIEN 1 l&#39;avenir parisien 1         FXX
+## 8           [&#39;Freinville&#39;]          FREINVILLE          freinville         FXX
+## 9          [&#39;Ambourget 4&#39;]         AMBOURGET 4         ambourget 4         FXX
+## 10     [&#39;Suzanne Buisson&#39;]     SUZANNE BUISSON     suzanne buisson         FXX
+##              Type Code_Grand_         Libelle_Gra Fait_Partie Code_Offici.10
+## 1  iris d&#39;habitat     9307305    Bois Saint-Denis         Non           &lt;NA&gt;
+## 2  iris d&#39;habitat     9300801             Bobigny         Non           &lt;NA&gt;
+## 3  iris d&#39;habitat     9305301        Noisy-le-Sec         Non           &lt;NA&gt;
+## 4  iris d&#39;habitat     9307304        Centre Ville         Non           &lt;NA&gt;
+## 5  iris d&#39;habitat     9305701 Pavillons-sous-Bois         Non           &lt;NA&gt;
+## 6  iris d&#39;habitat     9300502                Nord         Non           &lt;NA&gt;
+## 7  iris d&#39;habitat     9302908   L&#39;Avenir Parisien         Non           &lt;NA&gt;
+## 8  iris d&#39;habitat     9307101              Sevran         Non           &lt;NA&gt;
+## 9  iris d&#39;habitat     9300508           Ambourget         Non           &lt;NA&gt;
+## 10 iris d&#39;habitat     9301001      La Noue Caille         Non           &lt;NA&gt;
+##    Nom_Officie.12                       geometry
+## 1            &lt;NA&gt; MULTIPOLYGON (((2.568662 48...
+## 2            &lt;NA&gt; MULTIPOLYGON (((2.410129 48...
+## 3            &lt;NA&gt; MULTIPOLYGON (((2.460552 48...
+## 4            &lt;NA&gt; MULTIPOLYGON (((2.566451 48...
+## 5            &lt;NA&gt; MULTIPOLYGON (((2.51227 48....
+## 6            &lt;NA&gt; MULTIPOLYGON (((2.486115 48...
+## 7            &lt;NA&gt; MULTIPOLYGON (((2.419661 48...
+## 8            &lt;NA&gt; MULTIPOLYGON (((2.51108 48....
+## 9            &lt;NA&gt; MULTIPOLYGON (((2.504991 48...
+## 10           &lt;NA&gt; MULTIPOLYGON (((2.478301 48...</code></pre>
 <p>Dans le cadre de notre analyse des inégalités socio-spatiales à Saint
 Denis, nous avons mobilisé plusieurs types de données :</p>
 <p>Contours des IRIS (IGN) :</p>

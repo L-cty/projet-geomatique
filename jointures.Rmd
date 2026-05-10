@@ -9,33 +9,49 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
 ```{r}
 library(sf)
 library(dplyr)
 library(tmap)
 ```
-```{r}
-library(sf)
 
+# Lecture des données
+
+```{r}
 iris <- st_read("data/iris.shp")
 
 revenus <- st_read("data/revenus.gpkg")
-
-# Vérification des CRS
-st_crs(iris)
-
-st_crs(revenus)
-
-# Reprojection
-revenus <- st_transform(
-  revenus,
-  st_crs(iris)
-)
-
-# Jointure spatiale
-jointure <- st_join(iris, revenus)
-
-# Affichage
-plot(st_geometry(jointure))
 ```
 
+# Filtrage Saint-Denis
+
+```{r}
+iris_sd <- iris[
+  iris$Nom_Officie.7 == "['Saint-Denis']",
+]
+```
+
+# Reprojection
+
+```{r}
+revenus <- st_transform(
+  revenus,
+  st_crs(iris_sd)
+)
+```
+
+# Jointure spatiale
+
+```{r}
+jointure <- st_join(
+  iris_sd,
+  revenus
+)
+```
+
+# Carte
+
+```{r}
+plot(st_geometry(jointure))
+```

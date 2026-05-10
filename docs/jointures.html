@@ -278,21 +278,12 @@ $(document).ready(function () {
 </div>
 
 
-<pre class="r"><code>library(sf)</code></pre>
-<pre><code>## Linking to GEOS 3.14.1, GDAL 3.12.1, PROJ 9.7.1; sf_use_s2() is TRUE</code></pre>
-<pre class="r"><code>library(dplyr)</code></pre>
-<pre><code>## 
-## Attachement du package : &#39;dplyr&#39;</code></pre>
-<pre><code>## Les objets suivants sont masqués depuis &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## Les objets suivants sont masqués depuis &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(tmap)</code></pre>
 <pre class="r"><code>library(sf)
-
-iris &lt;- st_read(&quot;data/iris.shp&quot;)</code></pre>
+library(dplyr)
+library(tmap)</code></pre>
+<div id="lecture-des-données" class="section level1">
+<h1>Lecture des données</h1>
+<pre class="r"><code>iris &lt;- st_read(&quot;data/iris.shp&quot;)</code></pre>
 <pre><code>## Reading layer `iris&#39; from data source 
 ##   `C:\Users\fchri\OneDrive\Bureau\One Drive de Lylia Christory\OneDrive\Documents\projet-geomatique\data\iris.shp&#39; 
 ##   using driver `ESRI Shapefile&#39;
@@ -310,78 +301,32 @@ iris &lt;- st_read(&quot;data/iris.shp&quot;)</code></pre>
 ## Dimension:     XY
 ## Bounding box:  xmin: 651140.9 ymin: 6867026 xmax: 655918.4 ymax: 6872629
 ## Projected CRS: RGF93 Lambert 93</code></pre>
-<pre class="r"><code># Vérification des CRS
-st_crs(iris)</code></pre>
-<pre><code>## Coordinate Reference System:
-##   User input: WGS 84 
-##   wkt:
-## GEOGCRS[&quot;WGS 84&quot;,
-##     DATUM[&quot;World Geodetic System 1984&quot;,
-##         ELLIPSOID[&quot;WGS 84&quot;,6378137,298.257223563,
-##             LENGTHUNIT[&quot;metre&quot;,1]]],
-##     PRIMEM[&quot;Greenwich&quot;,0,
-##         ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
-##     CS[ellipsoidal,2],
-##         AXIS[&quot;latitude&quot;,north,
-##             ORDER[1],
-##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
-##         AXIS[&quot;longitude&quot;,east,
-##             ORDER[2],
-##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
-##     ID[&quot;EPSG&quot;,4326]]</code></pre>
-<pre class="r"><code>st_crs(revenus)</code></pre>
-<pre><code>## Coordinate Reference System:
-##   User input: RGF93 Lambert 93 
-##   wkt:
-## PROJCRS[&quot;RGF93 Lambert 93&quot;,
-##     BASEGEOGCRS[&quot;RGF93 geographiques (dms)&quot;,
-##         DATUM[&quot;Reseau Geodesique Francais 1993 v1&quot;,
-##             ELLIPSOID[&quot;GRS 1980&quot;,6378137,298.257222101,
-##                 LENGTHUNIT[&quot;metre&quot;,1]]],
-##         PRIMEM[&quot;Greenwich&quot;,0,
-##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
-##         ID[&quot;IGNF&quot;,&quot;RGF93G&quot;]],
-##     CONVERSION[&quot;unnamed&quot;,
-##         METHOD[&quot;Lambert Conic Conformal (2SP)&quot;,
-##             ID[&quot;EPSG&quot;,9802]],
-##         PARAMETER[&quot;Latitude of false origin&quot;,46.5,
-##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433],
-##             ID[&quot;EPSG&quot;,8821]],
-##         PARAMETER[&quot;Longitude of false origin&quot;,3,
-##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433],
-##             ID[&quot;EPSG&quot;,8822]],
-##         PARAMETER[&quot;Latitude of 1st standard parallel&quot;,44,
-##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433],
-##             ID[&quot;EPSG&quot;,8823]],
-##         PARAMETER[&quot;Latitude of 2nd standard parallel&quot;,49,
-##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433],
-##             ID[&quot;EPSG&quot;,8824]],
-##         PARAMETER[&quot;Easting at false origin&quot;,700000,
-##             LENGTHUNIT[&quot;metre&quot;,1],
-##             ID[&quot;EPSG&quot;,8826]],
-##         PARAMETER[&quot;Northing at false origin&quot;,6600000,
-##             LENGTHUNIT[&quot;metre&quot;,1],
-##             ID[&quot;EPSG&quot;,8827]]],
-##     CS[Cartesian,2],
-##         AXIS[&quot;easting&quot;,east,
-##             ORDER[1],
-##             LENGTHUNIT[&quot;metre&quot;,1]],
-##         AXIS[&quot;northing&quot;,north,
-##             ORDER[2],
-##             LENGTHUNIT[&quot;metre&quot;,1]],
-##     ID[&quot;IGNF&quot;,&quot;LAMB93&quot;]]</code></pre>
-<pre class="r"><code># Reprojection
-revenus &lt;- st_transform(
+</div>
+<div id="filtrage-saint-denis" class="section level1">
+<h1>Filtrage Saint-Denis</h1>
+<pre class="r"><code>iris_sd &lt;- iris[
+  iris$Nom_Officie.7 == &quot;[&#39;Saint-Denis&#39;]&quot;,
+]</code></pre>
+</div>
+<div id="reprojection" class="section level1">
+<h1>Reprojection</h1>
+<pre class="r"><code>revenus &lt;- st_transform(
   revenus,
-  st_crs(iris)
-)
-
-# Jointure spatiale
-jointure &lt;- st_join(iris, revenus)
-
-# Affichage
-plot(st_geometry(jointure))</code></pre>
-<p><img src="jointures_files/figure-html/unnamed-chunk-2-1.png" alt="" width="672" /></p>
+  st_crs(iris_sd)
+)</code></pre>
+</div>
+<div id="jointure-spatiale" class="section level1">
+<h1>Jointure spatiale</h1>
+<pre class="r"><code>jointure &lt;- st_join(
+  iris_sd,
+  revenus
+)</code></pre>
+</div>
+<div id="carte" class="section level1">
+<h1>Carte</h1>
+<pre class="r"><code>plot(st_geometry(jointure))</code></pre>
+<p><img src="jointures_files/figure-html/unnamed-chunk-6-1.png" alt="" width="672" /></p>
+</div>
 
 
 

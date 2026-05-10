@@ -9,29 +9,41 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Importation des données
 
 ```{r}
 library(sf)
-library(dplyr)
 ```
 
-# Lecture du shapefile IRIS
+# Lecture des données
 
 ```{r}
 iris <- st_read("data/iris.shp")
 ```
 
-# Affichage des données
+# Vérification des colonnes
 
 ```{r}
-print(iris)
+names(iris)
 ```
 
-# Affichage de la géométrie
+# Sélection de Saint-Denis
 
 ```{r}
-plot(st_geometry(iris))
+iris_sd <- iris[
+  iris$Nom_Officie.7 == "['Saint-Denis']",
+]
+```
+
+# Vérification
+
+```{r}
+print(iris_sd)
+```
+
+# Carte de Saint-Denis
+
+```{r}
+plot(st_geometry(iris_sd))
 ```
 
 

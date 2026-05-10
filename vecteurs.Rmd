@@ -9,22 +9,49 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
 ```{r}
-
 library(sf)
+```
 
+# Lecture des données
+
+```{r}
 iris <- st_read("data/iris.shp")
+```
 
+# Filtre Saint-Denis
+
+```{r}
 iris_sd <- iris[
   iris$Nom_Officie.7 == "['Saint-Denis']",
 ]
+```
 
+# Reprojection en Lambert 93
+
+```{r}
 iris_sd <- st_transform(iris_sd, 2154)
+```
 
+# Fusion des IRIS
+
+```{r}
 commune_sd <- st_union(iris_sd)
+```
 
-buffer_sd <- st_buffer(commune_sd, dist = 500)
+# Création du buffer
 
+```{r}
+buffer_sd <- st_buffer(
+  commune_sd,
+  dist = 500
+)
+```
+
+# Carte
+
+```{r}
 plot(st_geometry(commune_sd))
 
 plot(
@@ -33,9 +60,7 @@ plot(
   border = "red",
   lwd = 2
 )
-
 ```
-
 
 
 # Schéma

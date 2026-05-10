@@ -10,38 +10,29 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
+
 library(sf)
-library(tmap)
-```
 
-# Lecture des données
-
-```{r}
 iris <- st_read("data/iris.shp")
-```
 
-# Sélection de Saint-Denis
+iris_sd <- iris[
+  iris$Nom_Officie.7 == "['Saint-Denis']",
+]
 
-```{r}
-names(iris)
-```
+iris_sd <- st_transform(iris_sd, 2154)
 
-```{r}
-unique(iris$Nom_Officie.7)
-```
+commune_sd <- st_union(iris_sd)
 
-```{r}
-iris_sd <- iris[iris$Nom_Officie.7 == "['Saint-Denis']", ]
-```
+buffer_sd <- st_buffer(commune_sd, dist = 500)
 
-```{r}
-print(iris_sd)
-```
+plot(st_geometry(commune_sd))
 
-```{r}
-plot(st_geometry(iris_sd))
-
-buffer_sd <- st_buffer(iris_sd, dist = 500)
+plot(
+  st_geometry(buffer_sd),
+  add = TRUE,
+  border = "red",
+  lwd = 2
+)
 
 ```
 

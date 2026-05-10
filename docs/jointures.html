@@ -278,7 +278,101 @@ $(document).ready(function () {
 </div>
 
 
+<pre class="r"><code>library(sf)
+library(dplyr)
+library(tmap)</code></pre>
+<pre class="r"><code>library(sf)
 
+iris &lt;- st_read(&quot;data/iris.shp&quot;)</code></pre>
+<pre><code>## Reading layer `iris&#39; from data source 
+##   `C:\Users\fchri\OneDrive\Bureau\One Drive de Lylia Christory\OneDrive\Documents\projet-geomatique\data\iris.shp&#39; 
+##   using driver `ESRI Shapefile&#39;
+## Simple feature collection with 614 features and 30 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 2.28833 ymin: 48.80725 xmax: 2.603314 ymax: 49.01233
+## Geodetic CRS:  WGS 84</code></pre>
+<pre class="r"><code>revenus &lt;- st_read(&quot;data/revenus.gpkg&quot;)</code></pre>
+<pre><code>## Reading layer `saint_denis_revenus&#39; from data source 
+##   `C:\Users\fchri\OneDrive\Bureau\One Drive de Lylia Christory\OneDrive\Documents\projet-geomatique\data\revenus.gpkg&#39; 
+##   using driver `GPKG&#39;
+## Simple feature collection with 39 features and 35 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 651140.9 ymin: 6867026 xmax: 655918.4 ymax: 6872629
+## Projected CRS: RGF93 Lambert 93</code></pre>
+<pre class="r"><code># Vérification des CRS
+st_crs(iris)</code></pre>
+<pre><code>## Coordinate Reference System:
+##   User input: WGS 84 
+##   wkt:
+## GEOGCRS[&quot;WGS 84&quot;,
+##     DATUM[&quot;World Geodetic System 1984&quot;,
+##         ELLIPSOID[&quot;WGS 84&quot;,6378137,298.257223563,
+##             LENGTHUNIT[&quot;metre&quot;,1]]],
+##     PRIMEM[&quot;Greenwich&quot;,0,
+##         ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
+##     CS[ellipsoidal,2],
+##         AXIS[&quot;latitude&quot;,north,
+##             ORDER[1],
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
+##         AXIS[&quot;longitude&quot;,east,
+##             ORDER[2],
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
+##     ID[&quot;EPSG&quot;,4326]]</code></pre>
+<pre class="r"><code>st_crs(revenus)</code></pre>
+<pre><code>## Coordinate Reference System:
+##   User input: RGF93 Lambert 93 
+##   wkt:
+## PROJCRS[&quot;RGF93 Lambert 93&quot;,
+##     BASEGEOGCRS[&quot;RGF93 geographiques (dms)&quot;,
+##         DATUM[&quot;Reseau Geodesique Francais 1993 v1&quot;,
+##             ELLIPSOID[&quot;GRS 1980&quot;,6378137,298.257222101,
+##                 LENGTHUNIT[&quot;metre&quot;,1]]],
+##         PRIMEM[&quot;Greenwich&quot;,0,
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],
+##         ID[&quot;IGNF&quot;,&quot;RGF93G&quot;]],
+##     CONVERSION[&quot;unnamed&quot;,
+##         METHOD[&quot;Lambert Conic Conformal (2SP)&quot;,
+##             ID[&quot;EPSG&quot;,9802]],
+##         PARAMETER[&quot;Latitude of false origin&quot;,46.5,
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433],
+##             ID[&quot;EPSG&quot;,8821]],
+##         PARAMETER[&quot;Longitude of false origin&quot;,3,
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433],
+##             ID[&quot;EPSG&quot;,8822]],
+##         PARAMETER[&quot;Latitude of 1st standard parallel&quot;,44,
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433],
+##             ID[&quot;EPSG&quot;,8823]],
+##         PARAMETER[&quot;Latitude of 2nd standard parallel&quot;,49,
+##             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433],
+##             ID[&quot;EPSG&quot;,8824]],
+##         PARAMETER[&quot;Easting at false origin&quot;,700000,
+##             LENGTHUNIT[&quot;metre&quot;,1],
+##             ID[&quot;EPSG&quot;,8826]],
+##         PARAMETER[&quot;Northing at false origin&quot;,6600000,
+##             LENGTHUNIT[&quot;metre&quot;,1],
+##             ID[&quot;EPSG&quot;,8827]]],
+##     CS[Cartesian,2],
+##         AXIS[&quot;easting&quot;,east,
+##             ORDER[1],
+##             LENGTHUNIT[&quot;metre&quot;,1]],
+##         AXIS[&quot;northing&quot;,north,
+##             ORDER[2],
+##             LENGTHUNIT[&quot;metre&quot;,1]],
+##     ID[&quot;IGNF&quot;,&quot;LAMB93&quot;]]</code></pre>
+<pre class="r"><code># Reprojection
+revenus &lt;- st_transform(
+  revenus,
+  st_crs(iris)
+)
+
+# Jointure spatiale
+jointure &lt;- st_join(iris, revenus)
+
+# Affichage
+plot(st_geometry(jointure))</code></pre>
+<p><img src="jointures_files/figure-html/unnamed-chunk-2-1.png" alt="" width="672" /></p>
 
 
 

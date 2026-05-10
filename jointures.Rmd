@@ -9,30 +9,20 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
 ```{r}
 library(sf)
-library(dplyr)
 library(tmap)
-```
 
-# Lecture des données
-
-```{r}
 iris <- st_read("data/iris.shp")
 
 revenus <- st_read("data/revenus.gpkg")
 ```
-
-# Filtrage Saint-Denis
 
 ```{r}
 iris_sd <- iris[
   iris$Nom_Officie.7 == "['Saint-Denis']",
 ]
 ```
-
-# Reprojection
 
 ```{r}
 revenus <- st_transform(
@@ -41,8 +31,6 @@ revenus <- st_transform(
 )
 ```
 
-# Jointure spatiale
-
 ```{r}
 jointure <- st_join(
   iris_sd,
@@ -50,8 +38,18 @@ jointure <- st_join(
 )
 ```
 
-# Carte
+```{r}
+names(jointure)
+```
 
 ```{r}
-plot(st_geometry(jointure))
+tm_shape(jointure) +
+  tm_polygons(
+    col = "DISP_MED21",
+    palette = "Reds",
+    title = "Revenu médian"
+  )
 ```
+
+Les revenus médians révèlent une forte hétérogénéité socio-spatiale au sein de Saint-Denis. Les IRIS situés à proximité des grands axes et des zones récemment réaménagées présentent des revenus plus élevés que les secteurs plus populaires du nord de la commune.
+

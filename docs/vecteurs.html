@@ -281,7 +281,8 @@ $(document).ready(function () {
 </div>
 
 
-<pre class="r"><code>library(sf)</code></pre>
+<pre class="r"><code>library(sf)
+library(tmap)</code></pre>
 <div id="lecture-des-données" class="section level1">
 <h1>Lecture des données</h1>
 <pre class="r"><code>iris &lt;- st_read(&quot;data/iris.shp&quot;)</code></pre>
@@ -326,14 +327,206 @@ plot(
   lwd = 2
 )</code></pre>
 <p><img src="vecteurs_files/figure-html/unnamed-chunk-7-1.png" alt="" width="672" /></p>
-<p><img src="index_files/figure-html/inegalites_revenus.png" /> Cette
-carte représente la répartition spatiale du revenu médian disponible à
-l’échelle des IRIS, c’est-à-dire des petites unités statistiques qui
-permettent une lecture fine du territoire. Le choix d’un dégradé de
-couleurs allant du jaune pâle au rouge foncé permet de visualiser
-immédiatement les contrastes socio-économiques : les teintes claires
-correspondent aux revenus les plus faibles, tandis que les teintes
-sombres signalent les niveaux de vie les plus élevés.</p>
+<p>Carte des inégalités de revenus :</p>
+<pre class="r"><code>library(sf)
+library(dplyr)
+library(tmap)
+
+# Lecture du shapefile
+iris &lt;- st_read(&quot;data/iris.shp&quot;)</code></pre>
+<pre><code>## Reading layer `iris&#39; from data source 
+##   `C:\Users\fchri\OneDrive\Bureau\One Drive de Lylia Christory\OneDrive\Documents\projet-geomatique\data\iris.shp&#39; 
+##   using driver `ESRI Shapefile&#39;
+## Simple feature collection with 614 features and 30 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 2.28833 ymin: 48.80725 xmax: 2.603314 ymax: 49.01233
+## Geodetic CRS:  WGS 84</code></pre>
+<pre class="r"><code># Lecture des revenus
+revenus &lt;- st_read(&quot;data/revenus.gpkg&quot;)</code></pre>
+<pre><code>## Reading layer `saint_denis_revenus&#39; from data source 
+##   `C:\Users\fchri\OneDrive\Bureau\One Drive de Lylia Christory\OneDrive\Documents\projet-geomatique\data\revenus.gpkg&#39; 
+##   using driver `GPKG&#39;
+## Simple feature collection with 39 features and 35 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 651140.9 ymin: 6867026 xmax: 655918.4 ymax: 6872629
+## Projected CRS: RGF93 Lambert 93</code></pre>
+<pre class="r"><code># Sélection de Saint-Denis
+iris_sd &lt;- iris |&gt;
+  filter(
+    Nom_Officie.7 == &quot;[&#39;Saint-Denis&#39;]&quot;
+  )
+
+# Vérification
+print(iris_sd)</code></pre>
+<pre><code>## Simple feature collection with 39 features and 30 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 2.333246 ymin: 48.90148 xmax: 2.398159 ymax: 48.95211
+## Geodetic CRS:  WGS 84
+## First 10 features:
+##    Annee Code_Offici       Nom_Officie Code_Offici.1         Nom_Officie.1 Code_Offici.2
+## 1   2024      [&#39;11&#39;] [&#39;Île-de-France&#39;]        [&#39;93&#39;] [&#39;Seine-Saint-Denis&#39;]       [&#39;933&#39;]
+## 2   2024      [&#39;11&#39;] [&#39;Île-de-France&#39;]        [&#39;93&#39;] [&#39;Seine-Saint-Denis&#39;]       [&#39;933&#39;]
+## 3   2024      [&#39;11&#39;] [&#39;Île-de-France&#39;]        [&#39;93&#39;] [&#39;Seine-Saint-Denis&#39;]       [&#39;933&#39;]
+## 4   2024      [&#39;11&#39;] [&#39;Île-de-France&#39;]        [&#39;93&#39;] [&#39;Seine-Saint-Denis&#39;]       [&#39;933&#39;]
+## 5   2024      [&#39;11&#39;] [&#39;Île-de-France&#39;]        [&#39;93&#39;] [&#39;Seine-Saint-Denis&#39;]       [&#39;933&#39;]
+## 6   2024      [&#39;11&#39;] [&#39;Île-de-France&#39;]        [&#39;93&#39;] [&#39;Seine-Saint-Denis&#39;]       [&#39;933&#39;]
+## 7   2024      [&#39;11&#39;] [&#39;Île-de-France&#39;]        [&#39;93&#39;] [&#39;Seine-Saint-Denis&#39;]       [&#39;933&#39;]
+## 8   2024      [&#39;11&#39;] [&#39;Île-de-France&#39;]        [&#39;93&#39;] [&#39;Seine-Saint-Denis&#39;]       [&#39;933&#39;]
+## 9   2024      [&#39;11&#39;] [&#39;Île-de-France&#39;]        [&#39;93&#39;] [&#39;Seine-Saint-Denis&#39;]       [&#39;933&#39;]
+## 10  2024      [&#39;11&#39;] [&#39;Île-de-France&#39;]        [&#39;93&#39;] [&#39;Seine-Saint-Denis&#39;]       [&#39;933&#39;]
+##      Nom_Officie.2 Code_Offici.3 Nom_Officie.3 Code_Offici.4 Nom_Officie.4 Code_Offici.5
+## 1  [&#39;Saint-Denis&#39;]      [&#39;1109&#39;]     [&#39;Paris&#39;]     [&#39;75056&#39;]     [&#39;Paris&#39;] [&#39;200054781&#39;]
+## 2  [&#39;Saint-Denis&#39;]      [&#39;1109&#39;]     [&#39;Paris&#39;]     [&#39;75056&#39;]     [&#39;Paris&#39;] [&#39;200054781&#39;]
+## 3  [&#39;Saint-Denis&#39;]      [&#39;1109&#39;]     [&#39;Paris&#39;]     [&#39;75056&#39;]     [&#39;Paris&#39;] [&#39;200054781&#39;]
+## 4  [&#39;Saint-Denis&#39;]      [&#39;1109&#39;]     [&#39;Paris&#39;]     [&#39;75056&#39;]     [&#39;Paris&#39;] [&#39;200054781&#39;]
+## 5  [&#39;Saint-Denis&#39;]      [&#39;1109&#39;]     [&#39;Paris&#39;]     [&#39;75056&#39;]     [&#39;Paris&#39;] [&#39;200054781&#39;]
+## 6  [&#39;Saint-Denis&#39;]      [&#39;1109&#39;]     [&#39;Paris&#39;]     [&#39;75056&#39;]     [&#39;Paris&#39;] [&#39;200054781&#39;]
+## 7  [&#39;Saint-Denis&#39;]      [&#39;1109&#39;]     [&#39;Paris&#39;]     [&#39;75056&#39;]     [&#39;Paris&#39;] [&#39;200054781&#39;]
+## 8  [&#39;Saint-Denis&#39;]      [&#39;1109&#39;]     [&#39;Paris&#39;]     [&#39;75056&#39;]     [&#39;Paris&#39;] [&#39;200054781&#39;]
+## 9  [&#39;Saint-Denis&#39;]      [&#39;1109&#39;]     [&#39;Paris&#39;]     [&#39;75056&#39;]     [&#39;Paris&#39;] [&#39;200054781&#39;]
+## 10 [&#39;Saint-Denis&#39;]      [&#39;1109&#39;]     [&#39;Paris&#39;]     [&#39;75056&#39;]     [&#39;Paris&#39;] [&#39;200054781&#39;]
+##                   Nom_Officie.5 Code_Offici.6      Nom_Officie.6 Code_Offici.7
+## 1  [&#39;Métropole du Grand Paris&#39;] [&#39;200057867&#39;] [&#39;Plaine Commune&#39;]     [&#39;93066&#39;]
+## 2  [&#39;Métropole du Grand Paris&#39;] [&#39;200057867&#39;] [&#39;Plaine Commune&#39;]     [&#39;93066&#39;]
+## 3  [&#39;Métropole du Grand Paris&#39;] [&#39;200057867&#39;] [&#39;Plaine Commune&#39;]     [&#39;93066&#39;]
+## 4  [&#39;Métropole du Grand Paris&#39;] [&#39;200057867&#39;] [&#39;Plaine Commune&#39;]     [&#39;93066&#39;]
+## 5  [&#39;Métropole du Grand Paris&#39;] [&#39;200057867&#39;] [&#39;Plaine Commune&#39;]     [&#39;93066&#39;]
+## 6  [&#39;Métropole du Grand Paris&#39;] [&#39;200057867&#39;] [&#39;Plaine Commune&#39;]     [&#39;93066&#39;]
+## 7  [&#39;Métropole du Grand Paris&#39;] [&#39;200057867&#39;] [&#39;Plaine Commune&#39;]     [&#39;93066&#39;]
+## 8  [&#39;Métropole du Grand Paris&#39;] [&#39;200057867&#39;] [&#39;Plaine Commune&#39;]     [&#39;93066&#39;]
+## 9  [&#39;Métropole du Grand Paris&#39;] [&#39;200057867&#39;] [&#39;Plaine Commune&#39;]     [&#39;93066&#39;]
+## 10 [&#39;Métropole du Grand Paris&#39;] [&#39;200057867&#39;] [&#39;Plaine Commune&#39;]     [&#39;93066&#39;]
+##      Nom_Officie.7 Code_Offici.8   Nom_Officie.8 Code_Offici.9
+## 1  [&#39;Saint-Denis&#39;]     [&#39;93066&#39;] [&#39;Saint-Denis&#39;] [&#39;930660503&#39;]
+## 2  [&#39;Saint-Denis&#39;]     [&#39;93066&#39;] [&#39;Saint-Denis&#39;] [&#39;930660403&#39;]
+## 3  [&#39;Saint-Denis&#39;]     [&#39;93066&#39;] [&#39;Saint-Denis&#39;] [&#39;930660904&#39;]
+## 4  [&#39;Saint-Denis&#39;]     [&#39;93066&#39;] [&#39;Saint-Denis&#39;] [&#39;930660402&#39;]
+## 5  [&#39;Saint-Denis&#39;]     [&#39;93066&#39;] [&#39;Saint-Denis&#39;] [&#39;930660201&#39;]
+## 6  [&#39;Saint-Denis&#39;]     [&#39;93066&#39;] [&#39;Saint-Denis&#39;] [&#39;930660202&#39;]
+## 7  [&#39;Saint-Denis&#39;]     [&#39;93066&#39;] [&#39;Saint-Denis&#39;] [&#39;930660705&#39;]
+## 8  [&#39;Saint-Denis&#39;]     [&#39;93066&#39;] [&#39;Saint-Denis&#39;] [&#39;930660908&#39;]
+## 9  [&#39;Saint-Denis&#39;]     [&#39;93066&#39;] [&#39;Saint-Denis&#39;] [&#39;930660701&#39;]
+## 10 [&#39;Saint-Denis&#39;]     [&#39;93066&#39;] [&#39;Saint-Denis&#39;] [&#39;930660907&#39;]
+##                               Nom_Officie.9                       Nom_Officie.10
+## 1          [&#39;Mutuelle Champ de Courses 03&#39;]         MUTUELLE CHAMP DE COURSES 03
+## 2         [&#39;Courtille Saussaie Floréal 03&#39;]        COURTILLE SAUSSAIE FLORÉAL 03
+## 3     [&#39;République Gare Porte de Paris 04&#39;]    RÉPUBLIQUE GARE PORTE DE PARIS 04
+## 4         [&#39;Courtille Saussaie Floréal 02&#39;]        COURTILLE SAUSSAIE FLORÉAL 02
+## 5  [&#39;Peri Langevin Stalingrad Politzer 01&#39;] PERI LANGEVIN STALINGRAD POLITZER 01
+## 6  [&#39;Peri Langevin Stalingrad Politzer 02&#39;] PERI LANGEVIN STALINGRAD POLITZER 02
+## 7               [&#39;Franc-Moisin Bel-Air 05&#39;]              FRANC-MOISIN BEL-AIR 05
+## 8     [&#39;République Gare Porte de Paris 08&#39;]    RÉPUBLIQUE GARE PORTE DE PARIS 08
+## 9               [&#39;Franc-Moisin Bel-Air 01&#39;]              FRANC-MOISIN BEL-AIR 01
+## 10    [&#39;République Gare Porte de Paris 07&#39;]    RÉPUBLIQUE GARE PORTE DE PARIS 07
+##                          Nom_Officie.11 Code_Iso_31           Type Code_Grand_
+## 1          mutuelle champ de courses 03         FXX iris d&#39;habitat     9306605
+## 2         courtille saussaie floréal 03         FXX iris d&#39;habitat     9306604
+## 3     république gare porte de paris 04         FXX iris d&#39;habitat     9306609
+## 4         courtille saussaie floréal 02         FXX iris d&#39;habitat     9306604
+## 5  peri langevin stalingrad politzer 01         FXX iris d&#39;habitat     9306602
+## 6  peri langevin stalingrad politzer 02         FXX iris d&#39;habitat     9306602
+## 7               franc-moisin bel-air 05         FXX iris d&#39;habitat     9306607
+## 8     république gare porte de paris 08         FXX iris d&#39;habitat     9306609
+## 9               franc-moisin bel-air 01         FXX iris d&#39;habitat     9306607
+## 10    république gare porte de paris 07         FXX iris d&#39;habitat     9306609
+##                          Libelle_Gra Fait_Partie Code_Offici.10 Nom_Officie.12
+## 1          Mutuelle champ de courses         Non           &lt;NA&gt;           &lt;NA&gt;
+## 2         Courtille Saussaie Floreal         Non           &lt;NA&gt;           &lt;NA&gt;
+## 3     République-Gare-Porte de Paris         Non           &lt;NA&gt;           &lt;NA&gt;
+## 4         Courtille Saussaie Floreal         Non           &lt;NA&gt;           &lt;NA&gt;
+## 5  Péri Langevin Stalingrad Politzer         Non           &lt;NA&gt;           &lt;NA&gt;
+## 6  Péri Langevin Stalingrad Politzer         Non           &lt;NA&gt;           &lt;NA&gt;
+## 7               Franc-Moisin Bel-Air         Non           &lt;NA&gt;           &lt;NA&gt;
+## 8     République-Gare-Porte de Paris         Non           &lt;NA&gt;           &lt;NA&gt;
+## 9               Franc-Moisin Bel-Air         Non           &lt;NA&gt;           &lt;NA&gt;
+## 10    République-Gare-Porte de Paris         Non           &lt;NA&gt;           &lt;NA&gt;
+##                          geometry
+## 1  MULTIPOLYGON (((2.367335 48...
+## 2  MULTIPOLYGON (((2.38187 48....
+## 3  MULTIPOLYGON (((2.347363 48...
+## 4  MULTIPOLYGON (((2.376492 48...
+## 5  MULTIPOLYGON (((2.356879 48...
+## 6  MULTIPOLYGON (((2.356333 48...
+## 7  MULTIPOLYGON (((2.371145 48...
+## 8  MULTIPOLYGON (((2.353601 48...
+## 9  MULTIPOLYGON (((2.366096 48...
+## 10 MULTIPOLYGON (((2.348671 48...</code></pre>
+<pre class="r"><code># Harmonisation des projections
+revenus &lt;- st_transform(
+  revenus,
+  st_crs(iris_sd)
+)
+
+# Jointure spatiale
+jointure &lt;- st_join(
+  iris_sd,
+  revenus
+)
+
+# Vérification des colonnes
+names(jointure)</code></pre>
+<pre><code>##  [1] &quot;Annee&quot;          &quot;Code_Offici&quot;    &quot;Nom_Officie&quot;    &quot;Code_Offici.1&quot;  &quot;Nom_Officie.1&quot; 
+##  [6] &quot;Code_Offici.2&quot;  &quot;Nom_Officie.2&quot;  &quot;Code_Offici.3&quot;  &quot;Nom_Officie.3&quot;  &quot;Code_Offici.4&quot; 
+## [11] &quot;Nom_Officie.4&quot;  &quot;Code_Offici.5&quot;  &quot;Nom_Officie.5&quot;  &quot;Code_Offici.6&quot;  &quot;Nom_Officie.6&quot; 
+## [16] &quot;Code_Offici.7&quot;  &quot;Nom_Officie.7&quot;  &quot;Code_Offici.8&quot;  &quot;Nom_Officie.8&quot;  &quot;Code_Offici.9&quot; 
+## [21] &quot;Nom_Officie.9&quot;  &quot;Nom_Officie.10&quot; &quot;Nom_Officie.11&quot; &quot;Code_Iso_31&quot;    &quot;Type&quot;          
+## [26] &quot;Code_Grand_&quot;    &quot;Libelle_Gra&quot;    &quot;Fait_Partie&quot;    &quot;Code_Offici.10&quot; &quot;Nom_Officie.12&quot;
+## [31] &quot;INSEE_COM&quot;      &quot;NOM_COM&quot;        &quot;IRIS&quot;           &quot;CODE_IRIS&quot;      &quot;NOM_IRIS&quot;      
+## [36] &quot;TYP_IRIS&quot;       &quot;DISP_TP6021&quot;    &quot;DISP_INCERT21&quot;  &quot;DISP_Q121&quot;      &quot;DISP_MED21&quot;    
+## [41] &quot;DISP_Q321&quot;      &quot;DISP_EQ21&quot;      &quot;DISP_D121&quot;      &quot;DISP_D221&quot;      &quot;DISP_D321&quot;     
+## [46] &quot;DISP_D421&quot;      &quot;DISP_D621&quot;      &quot;DISP_D721&quot;      &quot;DISP_D821&quot;      &quot;DISP_D921&quot;     
+## [51] &quot;DISP_RD21&quot;      &quot;DISP_S80S2021&quot;  &quot;DISP_GI21&quot;      &quot;DISP_PACT21&quot;    &quot;DISP_PTSA21&quot;   
+## [56] &quot;DISP_PCHO21&quot;    &quot;DISP_PBEN21&quot;    &quot;DISP_PPEN21&quot;    &quot;DISP_PPAT21&quot;    &quot;DISP_PPSOC21&quot;  
+## [61] &quot;DISP_PPFAM21&quot;   &quot;DISP_PPMINI21&quot;  &quot;DISP_PPLOGT21&quot;  &quot;DISP_PIMPOT21&quot;  &quot;DISP_NOTE21&quot;   
+## [66] &quot;geometry&quot;</code></pre>
+<pre class="r"><code># Vérification de la variable revenu
+class(jointure$DISP_MED21)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<pre class="r"><code>summary(jointure$DISP_MED21)</code></pre>
+<pre><code>##    Length  N.unique   N.blank Min.nchar Max.nchar 
+##       200        36         0         2         5</code></pre>
+<pre class="r"><code># Carte choroplèthe
+tm_shape(jointure) +
+  tm_polygons(
+    col = &quot;DISP_MED21&quot;,
+    palette = &quot;YlOrRd&quot;,
+    style = &quot;quantile&quot;,
+    n = 5,
+    title = &quot;Revenu médian&quot;
+  ) +
+  tm_layout(
+    title = &quot;Inégalités de revenus à Saint-Denis&quot;,
+    legend.outside = TRUE
+  )</code></pre>
+<pre><code>## </code></pre>
+<pre><code>## ── tmap v3 code detected ────────────────────────────────────────────────────────────────</code></pre>
+<pre><code>## [v3-&gt;v4] `tm_polygons()`: instead of `style = &quot;quantile&quot;`, use fill.scale =
+## `tm_scale_intervals()`.
+## ℹ Migrate the argument(s) &#39;style&#39;, &#39;n&#39;, &#39;palette&#39; (rename to &#39;values&#39;) to
+##   &#39;tm_scale_intervals(&lt;HERE&gt;)&#39;
+## [v3-&gt;v4] `tm_polygons()`: migrate the argument(s) related to the legend of the visual
+## variable `fill` namely &#39;title&#39; to &#39;fill.legend = tm_legend(&lt;HERE&gt;)&#39;
+## [v3-&gt;v4] `tm_layout()`: use `tm_title()` instead of `tm_layout(title = )`
+## [cols4all] color palettes: use palettes from the R package cols4all. Run
+## `cols4all::c4a_gui()` to explore them. The old palette name &quot;YlOrRd&quot; is named
+## &quot;brewer.yl_or_rd&quot;
+## Multiple palettes called &quot;yl_or_rd&quot; found: &quot;brewer.yl_or_rd&quot;, &quot;matplotlib.yl_or_rd&quot;. The first one, &quot;brewer.yl_or_rd&quot;, is returned.</code></pre>
+<pre><code>## Warning: Number of levels of the variable assigned to the aesthetic &quot;fill&quot; of the layer
+## &quot;polygons&quot; is 36, which is larger than n.max (which is 30), so levels are combined.</code></pre>
+<pre><code>## [plot mode] fit legend/component: Some legend items or map compoments do not fit well,
+## and are therefore rescaled.
+## ℹ Set the tmap option `component.autoscale = FALSE` to disable rescaling.</code></pre>
+<p><img src="vecteurs_files/figure-html/unnamed-chunk-8-1.png" alt="" width="672" /></p>
+<p>Cette carte représente la répartition spatiale du revenu médian
+disponible à l’échelle des IRIS, c’est-à-dire des petites unités
+statistiques qui permettent une lecture fine du territoire. Le choix
+d’un dégradé de couleurs allant du jaune pâle au rouge foncé permet de
+visualiser immédiatement les contrastes socio-économiques : les teintes
+claires correspondent aux revenus les plus faibles, tandis que les
+teintes sombres signalent les niveaux de vie les plus élevés.</p>
 <p>D’un point de vue général, la carte met en évidence une forte
 hétérogénéité interne. L’espace communal n’est pas uniforme. Au
 contraire, il est fragmenté en zones distinctes où les conditions de vie
@@ -359,16 +552,94 @@ Entre ces deux extrêmes, une large palette de teintes intermédiaires
 révèle des zones de transition, où les niveaux de vie sont moyens. Ces
 espaces jouent un rôle de tampon entre les quartiers les plus favorisés
 et les plus défavorisés, illustrant la complexité du tissu urbain.</p>
-<p><img src="index_files/figure-html/buffer_1km.png" /> Un buffer de 1
-km tracé autour d’un point central permet de focaliser l’analyse sur une
-zone précise et d’observer la distribution des revenus dans cet espace
-délimité.Le choix d’un buffer de 1 km autour du centre permet d’analyser
-l’effet de la distance sur la distribution des revenus. Cette distance
-correspond à une échelle pertinente de proximité urbaine (environ 10 à
-15 minutes à pied), ce qui permet d’observer les variations
-socio-spatiales entre le centre et les espaces périphériques. Le point
-central choisi correspond au cœur historique et administratif de la
-commune, structurant l’organisation du territoire.</p>
+<p>Carte buffer 1km :</p>
+<pre class="r"><code>library(sf)
+library(tmap)
+library(dplyr)
+
+# Lecture des données
+revenus &lt;- st_read(&quot;data/revenus.gpkg&quot;)</code></pre>
+<pre><code>## Reading layer `saint_denis_revenus&#39; from data source 
+##   `C:\Users\fchri\OneDrive\Bureau\One Drive de Lylia Christory\OneDrive\Documents\projet-geomatique\data\revenus.gpkg&#39; 
+##   using driver `GPKG&#39;
+## Simple feature collection with 39 features and 35 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 651140.9 ymin: 6867026 xmax: 655918.4 ymax: 6872629
+## Projected CRS: RGF93 Lambert 93</code></pre>
+<pre class="r"><code># Sélection de Saint-Denis
+jointure_sd &lt;- jointure |&gt;
+  filter(
+    Nom_Officie.7 == &quot;[&#39;Saint-Denis&#39;]&quot;
+  )
+
+# Reprojection en Lambert 93
+jointure_sd &lt;- st_transform(
+  jointure_sd,
+  2154
+)
+
+# Sélection d’un IRIS central
+iris_centre &lt;- jointure_sd |&gt;
+  filter(
+    grepl(
+      &quot;centre|basilique&quot;,
+      NOM_IRIS,
+      ignore.case = TRUE
+    )
+  ) |&gt;
+  slice(1)
+
+# Création du buffer de 1 km
+buffer_1km &lt;- st_buffer(
+  iris_centre,
+  dist = 1000
+)
+
+# Carte
+tm_shape(jointure_sd) +
+  tm_polygons(
+    col = &quot;DISP_MED21&quot;,
+    palette = &quot;YlOrRd&quot;,
+    style = &quot;quantile&quot;,
+    title = &quot;Revenu médian&quot;
+  ) +
+  tm_shape(buffer_1km) +
+  tm_borders(
+    col = &quot;blue&quot;,
+    lwd = 2
+  ) +
+  tm_layout(
+    title = &quot;Buffer de 1 km autour du centre&quot;
+  )</code></pre>
+<pre><code>## </code></pre>
+<pre><code>## ── tmap v3 code detected ────────────────────────────────────────────────────────────────</code></pre>
+<pre><code>## [v3-&gt;v4] `tm_polygons()`: instead of `style = &quot;quantile&quot;`, use fill.scale =
+## `tm_scale_intervals()`.
+## ℹ Migrate the argument(s) &#39;style&#39;, &#39;palette&#39; (rename to &#39;values&#39;) to
+##   &#39;tm_scale_intervals(&lt;HERE&gt;)&#39;
+## [v3-&gt;v4] `tm_polygons()`: migrate the argument(s) related to the legend of the visual
+## variable `fill` namely &#39;title&#39; to &#39;fill.legend = tm_legend(&lt;HERE&gt;)&#39;
+## [v3-&gt;v4] `tm_layout()`: use `tm_title()` instead of `tm_layout(title = )`
+## [cols4all] color palettes: use palettes from the R package cols4all. Run
+## `cols4all::c4a_gui()` to explore them. The old palette name &quot;YlOrRd&quot; is named
+## &quot;brewer.yl_or_rd&quot;
+## Multiple palettes called &quot;yl_or_rd&quot; found: &quot;brewer.yl_or_rd&quot;, &quot;matplotlib.yl_or_rd&quot;. The first one, &quot;brewer.yl_or_rd&quot;, is returned.</code></pre>
+<pre><code>## Warning: Number of levels of the variable assigned to the aesthetic &quot;fill&quot; of the layer
+## &quot;polygons&quot; is 36, which is larger than n.max (which is 30), so levels are combined.</code></pre>
+<pre><code>## [plot mode] fit legend/component: Some legend items or map compoments do not fit well,
+## and are therefore rescaled.
+## ℹ Set the tmap option `component.autoscale = FALSE` to disable rescaling.</code></pre>
+<p><img src="vecteurs_files/figure-html/unnamed-chunk-9-1.png" alt="" width="672" /></p>
+<p>Un buffer de 1 km tracé autour d’un point central permet de focaliser
+l’analyse sur une zone précise et d’observer la distribution des revenus
+dans cet espace délimité.Le choix d’un buffer de 1 km autour du centre
+permet d’analyser l’effet de la distance sur la distribution des
+revenus. Cette distance correspond à une échelle pertinente de proximité
+urbaine (environ 10 à 15 minutes à pied), ce qui permet d’observer les
+variations socio-spatiales entre le centre et les espaces périphériques.
+Le point central choisi correspond au cœur historique et administratif
+de la commune, structurant l’organisation du territoire.</p>
 <p>Sur cette carte le buffer met en évidence un espace central
 caractérisé par une grande diversité socio-économique. À l’intérieur de
 ce périmètre, les couleurs varient allant du jaune clair au rouge foncé.

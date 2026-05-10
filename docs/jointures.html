@@ -282,11 +282,9 @@ $(document).ready(function () {
 
 
 <pre class="r"><code>library(sf)
-library(dplyr)
-library(tmap)</code></pre>
-<div id="lecture-des-données" class="section level1">
-<h1>Lecture des données</h1>
-<pre class="r"><code>iris &lt;- st_read(&quot;data/iris.shp&quot;)</code></pre>
+library(tmap)
+
+iris &lt;- st_read(&quot;data/iris.shp&quot;)</code></pre>
 <pre><code>## Reading layer `iris&#39; from data source 
 ##   `C:\Users\fchri\OneDrive\Bureau\One Drive de Lylia Christory\OneDrive\Documents\projet-geomatique\data\iris.shp&#39; 
 ##   using driver `ESRI Shapefile&#39;
@@ -304,32 +302,60 @@ library(tmap)</code></pre>
 ## Dimension:     XY
 ## Bounding box:  xmin: 651140.9 ymin: 6867026 xmax: 655918.4 ymax: 6872629
 ## Projected CRS: RGF93 Lambert 93</code></pre>
-</div>
-<div id="filtrage-saint-denis" class="section level1">
-<h1>Filtrage Saint-Denis</h1>
 <pre class="r"><code>iris_sd &lt;- iris[
   iris$Nom_Officie.7 == &quot;[&#39;Saint-Denis&#39;]&quot;,
 ]</code></pre>
-</div>
-<div id="reprojection" class="section level1">
-<h1>Reprojection</h1>
 <pre class="r"><code>revenus &lt;- st_transform(
   revenus,
   st_crs(iris_sd)
 )</code></pre>
-</div>
-<div id="jointure-spatiale" class="section level1">
-<h1>Jointure spatiale</h1>
 <pre class="r"><code>jointure &lt;- st_join(
   iris_sd,
   revenus
 )</code></pre>
-</div>
-<div id="carte" class="section level1">
-<h1>Carte</h1>
-<pre class="r"><code>plot(st_geometry(jointure))</code></pre>
+<pre class="r"><code>names(jointure)</code></pre>
+<pre><code>##  [1] &quot;Annee&quot;          &quot;Code_Offici&quot;    &quot;Nom_Officie&quot;    &quot;Code_Offici.1&quot;  &quot;Nom_Officie.1&quot; 
+##  [6] &quot;Code_Offici.2&quot;  &quot;Nom_Officie.2&quot;  &quot;Code_Offici.3&quot;  &quot;Nom_Officie.3&quot;  &quot;Code_Offici.4&quot; 
+## [11] &quot;Nom_Officie.4&quot;  &quot;Code_Offici.5&quot;  &quot;Nom_Officie.5&quot;  &quot;Code_Offici.6&quot;  &quot;Nom_Officie.6&quot; 
+## [16] &quot;Code_Offici.7&quot;  &quot;Nom_Officie.7&quot;  &quot;Code_Offici.8&quot;  &quot;Nom_Officie.8&quot;  &quot;Code_Offici.9&quot; 
+## [21] &quot;Nom_Officie.9&quot;  &quot;Nom_Officie.10&quot; &quot;Nom_Officie.11&quot; &quot;Code_Iso_31&quot;    &quot;Type&quot;          
+## [26] &quot;Code_Grand_&quot;    &quot;Libelle_Gra&quot;    &quot;Fait_Partie&quot;    &quot;Code_Offici.10&quot; &quot;Nom_Officie.12&quot;
+## [31] &quot;INSEE_COM&quot;      &quot;NOM_COM&quot;        &quot;IRIS&quot;           &quot;CODE_IRIS&quot;      &quot;NOM_IRIS&quot;      
+## [36] &quot;TYP_IRIS&quot;       &quot;DISP_TP6021&quot;    &quot;DISP_INCERT21&quot;  &quot;DISP_Q121&quot;      &quot;DISP_MED21&quot;    
+## [41] &quot;DISP_Q321&quot;      &quot;DISP_EQ21&quot;      &quot;DISP_D121&quot;      &quot;DISP_D221&quot;      &quot;DISP_D321&quot;     
+## [46] &quot;DISP_D421&quot;      &quot;DISP_D621&quot;      &quot;DISP_D721&quot;      &quot;DISP_D821&quot;      &quot;DISP_D921&quot;     
+## [51] &quot;DISP_RD21&quot;      &quot;DISP_S80S2021&quot;  &quot;DISP_GI21&quot;      &quot;DISP_PACT21&quot;    &quot;DISP_PTSA21&quot;   
+## [56] &quot;DISP_PCHO21&quot;    &quot;DISP_PBEN21&quot;    &quot;DISP_PPEN21&quot;    &quot;DISP_PPAT21&quot;    &quot;DISP_PPSOC21&quot;  
+## [61] &quot;DISP_PPFAM21&quot;   &quot;DISP_PPMINI21&quot;  &quot;DISP_PPLOGT21&quot;  &quot;DISP_PIMPOT21&quot;  &quot;DISP_NOTE21&quot;   
+## [66] &quot;geometry&quot;</code></pre>
+<pre class="r"><code>tm_shape(jointure) +
+  tm_polygons(
+    col = &quot;DISP_MED21&quot;,
+    palette = &quot;Reds&quot;,
+    title = &quot;Revenu médian&quot;
+  )</code></pre>
+<pre><code>## </code></pre>
+<pre><code>## ── tmap v3 code detected ────────────────────────────────────────────────────────────────</code></pre>
+<pre><code>## [v3-&gt;v4] `tm_tm_polygons()`: migrate the argument(s) related to the scale of the visual
+## variable `fill` namely &#39;palette&#39; (rename to &#39;values&#39;) to fill.scale = tm_scale(&lt;HERE&gt;).
+## [v3-&gt;v4] `tm_polygons()`: use &#39;fill&#39; for the fill color of polygons/symbols (instead of
+## &#39;col&#39;), and &#39;col&#39; for the outlines (instead of &#39;border.col&#39;).
+## [v3-&gt;v4] `tm_polygons()`: migrate the argument(s) related to the legend of the visual
+## variable `fill` namely &#39;title&#39; to &#39;fill.legend = tm_legend(&lt;HERE&gt;)&#39;
+## [cols4all] color palettes: use palettes from the R package cols4all. Run
+## `cols4all::c4a_gui()` to explore them. The old palette name &quot;Reds&quot; is named
+## &quot;brewer.reds&quot;
+## Multiple palettes called &quot;reds&quot; found: &quot;brewer.reds&quot;, &quot;matplotlib.reds&quot;. The first one, &quot;brewer.reds&quot;, is returned.</code></pre>
+<pre><code>## Warning: Number of levels of the variable assigned to the aesthetic &quot;fill&quot; of the layer
+## &quot;polygons&quot; is 36, which is larger than n.max (which is 30), so levels are combined.</code></pre>
+<pre><code>## [plot mode] fit legend/component: Some legend items or map compoments do not fit well,
+## and are therefore rescaled.
+## ℹ Set the tmap option `component.autoscale = FALSE` to disable rescaling.</code></pre>
 <p><img src="jointures_files/figure-html/unnamed-chunk-6-1.png" alt="" width="672" /></p>
-</div>
+<p>Les revenus médians révèlent une forte hétérogénéité socio-spatiale
+au sein de Saint-Denis. Les IRIS situés à proximité des grands axes et
+des zones récemment réaménagées présentent des revenus plus élevés que
+les secteurs plus populaires du nord de la commune.</p>
 
 
 

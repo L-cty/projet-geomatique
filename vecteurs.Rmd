@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 library(sf)
+library(tmap)
 ```
 
 # Lecture des données
@@ -62,15 +63,129 @@ plot(
 )
 ```
 
-![](index_files/figure-html/inegalites_revenus.png)
+Carte des inégalités de revenus : 
+
+```{r}
+library(sf)
+library(dplyr)
+library(tmap)
+
+# Lecture du shapefile
+iris <- st_read("data/iris.shp")
+
+# Lecture des revenus
+revenus <- st_read("data/revenus.gpkg")
+
+# Sélection de Saint-Denis
+iris_sd <- iris |>
+  filter(
+    Nom_Officie.7 == "['Saint-Denis']"
+  )
+
+# Vérification
+print(iris_sd)
+
+# Harmonisation des projections
+revenus <- st_transform(
+  revenus,
+  st_crs(iris_sd)
+)
+
+# Jointure spatiale
+jointure <- st_join(
+  iris_sd,
+  revenus
+)
+
+# Vérification des colonnes
+names(jointure)
+
+# Vérification de la variable revenu
+class(jointure$DISP_MED21)
+
+summary(jointure$DISP_MED21)
+
+# Carte choroplèthe
+tm_shape(jointure) +
+  tm_polygons(
+    col = "DISP_MED21",
+    palette = "YlOrRd",
+    style = "quantile",
+    n = 5,
+    title = "Revenu médian"
+  ) +
+  tm_layout(
+    title = "Inégalités de revenus à Saint-Denis",
+    legend.outside = TRUE
+  )
+```
+   
+   
+   
    Cette carte représente la répartition spatiale du revenu médian disponible à l’échelle des IRIS, c’est-à-dire des petites unités statistiques qui permettent une lecture fine du territoire. Le choix d’un dégradé de couleurs allant du jaune pâle au rouge foncé permet de visualiser immédiatement les contrastes socio-économiques : les teintes claires correspondent aux revenus les plus faibles, tandis que les teintes sombres signalent les niveaux de vie les plus élevés.
 
    D’un point de vue général, la carte met en évidence une forte hétérogénéité interne. L’espace communal n’est pas uniforme. Au contraire, il est fragmenté en zones distinctes où les conditions de vie varient sensiblement. On observe une juxtaposition de quartiers aux profils socio-économiques très différents, ce qui traduit une organisation urbaine marquée par des logiques de ségrégation. Les zones les plus riches, identifiables par des teintes rouges foncées, se concentrent principalement dans certaines parties périphériques et dans quelques enclaves plus centrales. Ces espaces correspondent souvent à des quartiers bénéficiant d’un meilleur cadre de vie : habitat plus qualitatif, présence d’infrastructures, accessibilité accrue aux transports et à l’emploi. Ces zones peuvent également être associées à des formes d’habitat plus stabilisées, avec une proportion plus importante de propriétaires et des ménages aux revenus plus élevés. Le sud et certaines zones apparaissent notamment comme des secteurs où les revenus médians sont plus élevés, traduisant une relative attractivité résidentielle.
 
    À l’inverse, les zones les plus pauvres, figurées en jaune clair ou beige, se situent majoritairement dans des secteurs centraux et dans certaines parties du nord et de l’est. Ces quartiers présentent des revenus médians nettement inférieurs de de 13 950€ à environ 14 890€.  Entre ces deux extrêmes, une large palette de teintes intermédiaires révèle des zones de transition, où les niveaux de vie sont moyens. Ces espaces jouent un rôle de tampon entre les quartiers les plus favorisés et les plus défavorisés, illustrant la complexité du tissu urbain.
 
+Carte buffer 1km :    
+   
+```{r}
+library(sf)
+library(tmap)
+library(dplyr)
 
-![](index_files/figure-html/buffer_1km.png)
+# Lecture des données
+revenus <- st_read("data/revenus.gpkg")
+
+# Sélection de Saint-Denis
+jointure_sd <- jointure |>
+  filter(
+    Nom_Officie.7 == "['Saint-Denis']"
+  )
+
+# Reprojection en Lambert 93
+jointure_sd <- st_transform(
+  jointure_sd,
+  2154
+)
+
+# Sélection d’un IRIS central
+iris_centre <- jointure_sd |>
+  filter(
+    grepl(
+      "centre|basilique",
+      NOM_IRIS,
+      ignore.case = TRUE
+    )
+  ) |>
+  slice(1)
+
+# Création du buffer de 1 km
+buffer_1km <- st_buffer(
+  iris_centre,
+  dist = 1000
+)
+
+# Carte
+tm_shape(jointure_sd) +
+  tm_polygons(
+    col = "DISP_MED21",
+    palette = "YlOrRd",
+    style = "quantile",
+    title = "Revenu médian"
+  ) +
+  tm_shape(buffer_1km) +
+  tm_borders(
+    col = "blue",
+    lwd = 2
+  ) +
+  tm_layout(
+    title = "Buffer de 1 km autour du centre"
+  )
+```
+
+
    Un buffer de 1 km tracé autour d’un point central permet de focaliser l’analyse sur une zone précise et d’observer la distribution des revenus dans cet espace délimité.Le choix d’un buffer de 1 km autour du centre permet d’analyser l’effet de la distance sur la distribution des revenus. Cette distance correspond à une échelle pertinente de proximité urbaine (environ 10 à 15 minutes à pied), ce qui permet d’observer les variations socio-spatiales entre le centre et les espaces périphériques. Le point central choisi correspond au cœur historique et administratif de la commune, structurant l’organisation du territoire. 
 
    Sur cette carte le buffer met en évidence un espace central caractérisé par une grande diversité socio-économique. À l’intérieur de ce périmètre, les couleurs varient allant du jaune clair au rouge foncé. Cela signifie que le centre de la commune n’est pas homogène, mais qu’il rassemble des populations aux niveaux de vie très contrastés avec des revenus médian allant de 13 950€ à 20 500€. 

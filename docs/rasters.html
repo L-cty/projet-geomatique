@@ -281,15 +281,74 @@ $(document).ready(function () {
 </div>
 
 
-<p><img src="index_files/image_sat_saint_denis.png" /></p>
-<pre class="r"><code>library(terra)
+<div id="géotraitements-rasters" class="section level1">
+<h1>Géotraitements Rasters</h1>
+<p>Bien que notre analyse repose principalement sur des données
+vectorielles, un traitement raster a été réalisé à partir d’une image
+satellite Sentinel-2 afin d’obtenir une représentation continue du
+territoire de Saint-Denis.</p>
+<div id="géotraitement-1-reprojection" class="section level2">
+<h2>Géotraitement 1 : Reprojection</h2>
+<pre class="r"><code>iris &lt;- st_read(&quot;data/iris.shp&quot;, quiet = TRUE)
+iris_sd &lt;- iris[iris$Nom_Officie.7 == &quot;[&#39;Saint-Denis&#39;]&quot;, ]
+iris_sd &lt;- st_transform(iris_sd, 2154)
+commune_sd &lt;- st_union(iris_sd)
 
-r &lt;- rast(&quot;index_files/image_sat_saint_denis.png&quot;)</code></pre>
-<pre><code>## Warning: [rast] unknown extent</code></pre>
-<pre class="r"><code>r2 &lt;- aggregate(r, fact = 2)
+r &lt;- rast(&quot;index_files/2026-05-01-00_00_2026-05-01-23_59_Sentinel-2_L2A_True_color(2).tiff&quot;)
+r_reproj &lt;- project(r, &quot;EPSG:2154&quot;)</code></pre>
+<p>L’image Sentinel-2 est initialement en WGS 84. Elle est reprojetée en
+Lambert 93 (EPSG:2154) pour être cohérente avec les données vectorielles
+et travailler en mètres.</p>
+</div>
+<div id="géotraitement-2-découpage-sur-saint-denis"
+class="section level2">
+<h2>Géotraitement 2 : Découpage sur Saint-Denis</h2>
+<pre class="r"><code>r_crop &lt;- crop(r_reproj, vect(commune_sd))
+r_mask &lt;- mask(r_crop, vect(commune_sd))
+plotRGB(r_mask, r=1, g=2, b=3, stretch=&quot;lin&quot;,
+        main=&quot;Saint-Denis - Image Sentinel-2&quot;)</code></pre>
+<p><img src="rasters_files/figure-html/unnamed-chunk-2-1.png" alt="" width="672" /></p>
+<p>Le raster est découpé selon les contours de la commune de
+Saint-Denis, d’abord par l’emprise (crop) puis par le masque exact de la
+commune (mask).</p>
+</div>
+<div id="géotraitement-3-conversion-en-niveaux-de-gris"
+class="section level2">
+<h2>Géotraitement 3 : Conversion en niveaux de gris</h2>
+<pre class="r"><code>r_gris &lt;- mean(r_mask)
+plot(r_gris, col = gray.colors(256),
+     main = &quot;Image en niveaux de gris&quot;)</code></pre>
+<p><img src="rasters_files/figure-html/unnamed-chunk-3-1.png" alt="" width="672" /></p>
+<p>Les trois bandes de couleur (rouge, vert, bleu) sont fusionnées en
+une seule bande en calculant leur moyenne. Cela permet de simplifier
+l’image pour le seuillage.</p>
+</div>
+<div id="géotraitement-4-seuillage" class="section level2">
+<h2>Géotraitement 4 : Seuillage</h2>
+<pre class="r"><code>r_seuil &lt;- ifel(r_gris &lt; 0.5, 1, 0)
+plot(r_seuil,
+     col = c(&quot;white&quot;, &quot;darkgray&quot;),
+     main = &quot;Seuillage : zones sombres vs claires&quot;,
+     legend = FALSE)</code></pre>
+<p><img src="rasters_files/figure-html/unnamed-chunk-4-1.png" alt="" width="672" /></p>
+<p>Un seuil de 0.5 est appliqué pour créer un masque binaire : les
+pixels dont la valeur est inférieure à 0.5 correspondent aux zones
+sombres (bâti dense, ombres), les autres aux zones claires (végétation,
+espaces ouverts).</p>
+</div>
+<div id="géotraitement-5-vectorisation" class="section level2">
+<h2>Géotraitement 5 : Vectorisation</h2>
+<pre class="r"><code>r_vect &lt;- as.polygons(r_seuil)
+r_vect_sf &lt;- st_as_sf(r_vect)
+zones_sombres &lt;- r_vect_sf[r_vect_sf$mean == 1, ]
 
-plot(r2)</code></pre>
-<p><img src="rasters_files/figure-html/unnamed-chunk-1-1.png" alt="" width="672" /></p>
+mf_map(zones_sombres, col = &quot;darkgray&quot;)
+mf_map(iris_sd, add = TRUE, col = NA, border = &quot;blue&quot;, lwd = 2)
+mf_layout(&quot;Zones sombres (bâti) à Saint-Denis&quot;, &quot;Sentinel-2, IGN&quot;)</code></pre>
+<p><img src="rasters_files/figure-html/unnamed-chunk-5-1.png" alt="" width="672" /></p>
+<p>Le raster binaire est converti en polygones vectoriels. On ne
+conserve que les zones sombres (valeur = 1) qui correspondent aux
+espaces bâtis et aux zones denses de la commune.</p>
 <p>Bien que notre analyse repose principalement sur des données
 vectorielles, un traitement raster peut être réalisé à partir des
 données IRIS afin d’obtenir une représentation continue des
@@ -317,6 +376,8 @@ l’espace, complémentaire de l’analyse vectorielle. Elle met en évidence
 des zones de transition et des gradients socio-spatiaux, moins visibles
 dans une représentation par polygones. Cependant, elle reste moins
 précise car elle repose sur une généralisation des données.</p>
+</div>
+</div>
 
 
 

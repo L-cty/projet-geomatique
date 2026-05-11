@@ -286,7 +286,9 @@ $(document).ready(function () {
 
 r &lt;- rast(&quot;index_files/image_sat_saint_denis.png&quot;)</code></pre>
 <pre><code>## Warning: [rast] unknown extent</code></pre>
-<pre class="r"><code>plot(r)</code></pre>
+<pre class="r"><code>r2 &lt;- aggregate(r, fact = 2)
+
+plot(r2)</code></pre>
 <p><img src="rasters_files/figure-html/unnamed-chunk-1-1.png" alt="" width="672" /></p>
 <p>Bien que notre analyse repose principalement sur des données
 vectorielles, un traitement raster peut être réalisé à partir des

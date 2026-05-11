@@ -16,7 +16,10 @@ library(terra)
 
 r <- rast("index_files/image_sat_saint_denis.png")
 
-plot(r)
+r2 <- aggregate(r, fact = 2)
+
+plot(r2)
+
 ```
 
 

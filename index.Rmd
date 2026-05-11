@@ -22,42 +22,9 @@ Ainsi, l’objectif de notre travail est d’analyser et de mettre en évidence 
 Dans quelle mesure les inégalités de revenus à Saint-Denis se traduisent-elles par des formes de fragmentation socio-spatiale ?
 
 
-# Description des données
+![](index_files/photo_saint_denis_1.jpg)
 
-- source des données
-- type de données
-- format
-- emprise spatiale
-- variables
-
-# Problématique
-
-Question étudiée.
-
-Objectifs de l’analyse.
-
-# Géotraitements vecteurs
-
-Description des traitements réalisés.
-
-## Schéma
-
-(insérer image)
-
-# Géotraitements rasters
-
-Description des traitements réalisés.
-
-## Schéma
+![](index_files/photo_saint_denis_2.jpg)
 
 
-![](index_files/figure-html/decoupage_IRIS.png)
 
-
-# Jointures
-
-Description des jointures attributaires ou spatiales.
-
-# Conclusion
-
-Résultats obtenus et limites.

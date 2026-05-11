@@ -309,25 +309,8 @@ library(tmap)</code></pre>
 <h1>Fusion des IRIS</h1>
 <pre class="r"><code>commune_sd &lt;- st_union(iris_sd)</code></pre>
 </div>
-<div id="création-du-buffer" class="section level1">
-<h1>Création du buffer</h1>
-<pre class="r"><code>buffer_sd &lt;- st_buffer(
-  commune_sd,
-  dist = 500
-)</code></pre>
-</div>
-<div id="carte" class="section level1">
-<h1>Carte</h1>
-<pre class="r"><code>plot(st_geometry(commune_sd))
-
-plot(
-  st_geometry(buffer_sd),
-  add = TRUE,
-  border = &quot;red&quot;,
-  lwd = 2
-)</code></pre>
-<p><img src="vecteurs_files/figure-html/unnamed-chunk-7-1.png" alt="" width="672" /></p>
-<p>Carte des inégalités de revenus :</p>
+<div id="carte-des-inégalités-de-revenus" class="section level1">
+<h1>Carte des inégalités de revenus :</h1>
 <pre class="r"><code>library(sf)
 library(dplyr)
 library(tmap)
@@ -519,7 +502,7 @@ tm_shape(jointure) +
 <pre><code>## [plot mode] fit legend/component: Some legend items or map compoments do not fit well,
 ## and are therefore rescaled.
 ## ℹ Set the tmap option `component.autoscale = FALSE` to disable rescaling.</code></pre>
-<p><img src="vecteurs_files/figure-html/unnamed-chunk-8-1.png" alt="" width="672" /></p>
+<p><img src="vecteurs_files/figure-html/unnamed-chunk-6-1.png" alt="" width="672" /></p>
 <p>Cette carte représente la répartition spatiale du revenu médian
 disponible à l’échelle des IRIS, c’est-à-dire des petites unités
 statistiques qui permettent une lecture fine du territoire. Le choix
@@ -552,7 +535,9 @@ Entre ces deux extrêmes, une large palette de teintes intermédiaires
 révèle des zones de transition, où les niveaux de vie sont moyens. Ces
 espaces jouent un rôle de tampon entre les quartiers les plus favorisés
 et les plus défavorisés, illustrant la complexité du tissu urbain.</p>
-<p>Carte buffer 1km :</p>
+</div>
+<div id="carte-buffer-1km" class="section level1">
+<h1>Carte buffer 1km :</h1>
 <pre class="r"><code>library(sf)
 library(tmap)
 library(dplyr)
@@ -630,7 +615,7 @@ tm_shape(jointure_sd) +
 <pre><code>## [plot mode] fit legend/component: Some legend items or map compoments do not fit well,
 ## and are therefore rescaled.
 ## ℹ Set the tmap option `component.autoscale = FALSE` to disable rescaling.</code></pre>
-<p><img src="vecteurs_files/figure-html/unnamed-chunk-9-1.png" alt="" width="672" /></p>
+<p><img src="vecteurs_files/figure-html/unnamed-chunk-7-1.png" alt="" width="672" /></p>
 <p>Un buffer de 1 km tracé autour d’un point central permet de focaliser
 l’analyse sur une zone précise et d’observer la distribution des revenus
 dans cet espace délimité.Le choix d’un buffer de 1 km autour du centre
@@ -676,17 +661,72 @@ différentes réalités sociales. En somme, cette carte offre une lecture
 fine de la distribution des revenus dans un espace ciblé, mettant en
 évidence la diversité et les inégalités qui structurent le centre
 urbain.</p>
-<p><img src="index_files/figure-html/inegalites_internes.png" /> La
-carte des inégalités internes par IRIS, mesurée à l’aide de l’indice de
-Gini, apporte un éclairage complémentaire sur la structuration sociale
-de l’espace urbain. L’analyse est réalisée à l’échelle des IRIS (Îlots
-Regroupés pour l’Information Statistique), qui sont des unités spatiales
-définies par l’INSEE. Chaque IRIS regroupe en moyenne environ 2 000
-habitants et constitue une échelle pertinente pour observer les
-inégalités à l’intérieur d’une commune. Elle met en évidence les écarts
-de revenus au sein même des quartiers, grâce à un dégradé de couleurs
-allant des teintes claires (faibles inégalités, autour de 0,226) aux
-teintes foncées (fortes inégalités, jusqu’à 0,385).</p>
+</div>
+<div id="carte-des-inégalités-internes" class="section level1">
+<h1>Carte des inégalités internes</h1>
+<pre class="r"><code>library(sf)
+library(tmap)
+library(dplyr)
+
+# Lecture des données
+revenus &lt;- st_read(&quot;data/revenus.gpkg&quot;)</code></pre>
+<pre><code>## Reading layer `saint_denis_revenus&#39; from data source 
+##   `C:\Users\fchri\OneDrive\Bureau\One Drive de Lylia Christory\OneDrive\Documents\projet-geomatique\data\revenus.gpkg&#39; 
+##   using driver `GPKG&#39;
+## Simple feature collection with 39 features and 35 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 651140.9 ymin: 6867026 xmax: 655918.4 ymax: 6872629
+## Projected CRS: RGF93 Lambert 93</code></pre>
+<pre class="r"><code># Filtrage Saint-Denis
+jointure_sd &lt;- jointure |&gt;
+  filter(
+    Nom_Officie.7 == &quot;[&#39;Saint-Denis&#39;]&quot;
+  )
+
+# Carte des inégalités
+tm_shape(jointure_sd) +
+  tm_polygons(
+    col = &quot;DISP_GI21&quot;,
+    palette = &quot;Reds&quot;,
+    style = &quot;quantile&quot;,
+    n = 5,
+    title = &quot;Indice de Gini&quot;
+  ) +
+  tm_layout(
+    title = &quot;Inégalités internes par IRIS à Saint-Denis (2021)&quot;,
+    legend.outside = TRUE
+  )</code></pre>
+<pre><code>## </code></pre>
+<pre><code>## ── tmap v3 code detected ────────────────────────────────────────────────────────────────</code></pre>
+<pre><code>## [v3-&gt;v4] `tm_polygons()`: instead of `style = &quot;quantile&quot;`, use fill.scale =
+## `tm_scale_intervals()`.
+## ℹ Migrate the argument(s) &#39;style&#39;, &#39;n&#39;, &#39;palette&#39; (rename to &#39;values&#39;) to
+##   &#39;tm_scale_intervals(&lt;HERE&gt;)&#39;
+## [v3-&gt;v4] `tm_polygons()`: migrate the argument(s) related to the legend of the visual
+## variable `fill` namely &#39;title&#39; to &#39;fill.legend = tm_legend(&lt;HERE&gt;)&#39;
+## [v3-&gt;v4] `tm_layout()`: use `tm_title()` instead of `tm_layout(title = )`
+## [cols4all] color palettes: use palettes from the R package cols4all. Run
+## `cols4all::c4a_gui()` to explore them. The old palette name &quot;Reds&quot; is named
+## &quot;brewer.reds&quot;
+## Multiple palettes called &quot;reds&quot; found: &quot;brewer.reds&quot;, &quot;matplotlib.reds&quot;. The first one, &quot;brewer.reds&quot;, is returned.</code></pre>
+<pre><code>## Warning: Number of levels of the variable assigned to the aesthetic &quot;fill&quot; of the layer
+## &quot;polygons&quot; is 33, which is larger than n.max (which is 30), so levels are combined.</code></pre>
+<pre><code>## [plot mode] fit legend/component: Some legend items or map compoments do not fit well,
+## and are therefore rescaled.
+## ℹ Set the tmap option `component.autoscale = FALSE` to disable rescaling.</code></pre>
+<p><img src="vecteurs_files/figure-html/unnamed-chunk-8-1.png" alt="" width="672" /></p>
+<p>La carte des inégalités internes par IRIS, mesurée à l’aide de
+l’indice de Gini, apporte un éclairage complémentaire sur la
+structuration sociale de l’espace urbain. L’analyse est réalisée à
+l’échelle des IRIS (Îlots Regroupés pour l’Information Statistique), qui
+sont des unités spatiales définies par l’INSEE. Chaque IRIS regroupe en
+moyenne environ 2 000 habitants et constitue une échelle pertinente pour
+observer les inégalités à l’intérieur d’une commune. Elle met en
+évidence les écarts de revenus au sein même des quartiers, grâce à un
+dégradé de couleurs allant des teintes claires (faibles inégalités,
+autour de 0,226) aux teintes foncées (fortes inégalités, jusqu’à
+0,385).</p>
 <p>L’indice de Gini est un indicateur statistique qui mesure le niveau
 d’inégalité des revenus au sein d’une population. Il varie entre 0 et 1
 : une valeur proche de 0 signifie que les revenus sont très homogènes
@@ -711,12 +751,45 @@ les espaces centraux où se combinent mixité sociale et fortes
 inégalités. L’indice de Gini permet donc de mettre en évidence une
 fragmentation plus fine, à l’intérieur même des quartiers, et pas
 seulement entre eux.</p>
-<p><img src="index_files/figure-html/taux_pauvrete.png" /> La carte
-représentant le taux de pauvreté par IRIS en 2021 à Saint-Denis met en
-évidence une forte disparité spatiale des situations sociales au sein de
-la commune. Comme pour la carte précédente, l’utilisation des IRIS
-permet d’analyser les écarts de revenus à une échelle fine, au plus près
-des réalités locales.</p>
+</div>
+<div id="carte-du-taux-de-pauvreté" class="section level1">
+<h1>Carte du taux de pauvreté</h1>
+<pre class="r"><code># Carte du taux de pauvreté
+tm_shape(jointure_sd) +
+  tm_polygons(
+    col = &quot;DISP_TP6021&quot;,
+    palette = &quot;Reds&quot;,
+    title = &quot;Taux de pauvreté (%)&quot;,
+    style = &quot;quantile&quot;,
+    n = 5
+  ) +
+  tm_layout(
+    title = &quot;Taux de pauvreté par IRIS — Saint-Denis (2021)&quot;,
+    legend.outside = TRUE
+  )</code></pre>
+<pre><code>## </code></pre>
+<pre><code>## ── tmap v3 code detected ────────────────────────────────────────────────────────────────</code></pre>
+<pre><code>## [v3-&gt;v4] `tm_polygons()`: instead of `style = &quot;quantile&quot;`, use fill.scale =
+## `tm_scale_intervals()`.
+## ℹ Migrate the argument(s) &#39;style&#39;, &#39;n&#39;, &#39;palette&#39; (rename to &#39;values&#39;) to
+##   &#39;tm_scale_intervals(&lt;HERE&gt;)&#39;
+## [v3-&gt;v4] `tm_polygons()`: migrate the argument(s) related to the legend of the visual
+## variable `fill` namely &#39;title&#39; to &#39;fill.legend = tm_legend(&lt;HERE&gt;)&#39;
+## [v3-&gt;v4] `tm_layout()`: use `tm_title()` instead of `tm_layout(title = )`
+## [cols4all] color palettes: use palettes from the R package cols4all. Run
+## `cols4all::c4a_gui()` to explore them. The old palette name &quot;Reds&quot; is named
+## &quot;brewer.reds&quot;
+## Multiple palettes called &quot;reds&quot; found: &quot;brewer.reds&quot;, &quot;matplotlib.reds&quot;. The first one, &quot;brewer.reds&quot;, is returned.
+## 
+## [plot mode] fit legend/component: Some legend items or map compoments do not fit well,
+## and are therefore rescaled.
+## ℹ Set the tmap option `component.autoscale = FALSE` to disable rescaling.</code></pre>
+<p><img src="vecteurs_files/figure-html/unnamed-chunk-9-1.png" alt="" width="672" /></p>
+<p>La carte représentant le taux de pauvreté par IRIS en 2021 à
+Saint-Denis met en évidence une forte disparité spatiale des situations
+sociales au sein de la commune. Comme pour la carte précédente,
+l’utilisation des IRIS permet d’analyser les écarts de revenus à une
+échelle fine, au plus près des réalités locales.</p>
 <p>Réalisée sous forme de carte choroplèthe, elle utilise un dégradé de
 couleurs allant des teintes les plus claires, correspondant à des taux
 de pauvreté faibles (autour de 25 %), aux teintes les plus foncées,
@@ -734,6 +807,41 @@ ségrégation, où les populations en difficulté tendent à se regrouper
 dans des quartiers spécifiques, tandis que d’autres zones apparaissent
 plus favorisées. Cette organisation spatiale met clairement en évidence
 une fragmentation socio-spatiale à l’échelle de la commune.</p>
+</div>
+<div id="carte-des-revenus-sociaux" class="section level1">
+<h1>Carte des revenus sociaux</h1>
+<pre class="r"><code># Carte des revenus sociaux
+tm_shape(jointure_sd) +
+  tm_polygons(
+    col = &quot;DISP_PPSOC21&quot;,
+    palette = &quot;Purples&quot;,
+    style = &quot;quantile&quot;,
+    n = 5,
+    title = &quot;Part des revenus sociaux&quot;
+  ) +
+  tm_layout(
+    title = &quot;Part des revenus sociaux par IRIS&quot;,
+    legend.outside = TRUE
+  )</code></pre>
+<pre><code>## </code></pre>
+<pre><code>## ── tmap v3 code detected ────────────────────────────────────────────────────────────────</code></pre>
+<pre><code>## [v3-&gt;v4] `tm_polygons()`: instead of `style = &quot;quantile&quot;`, use fill.scale =
+## `tm_scale_intervals()`.
+## ℹ Migrate the argument(s) &#39;style&#39;, &#39;n&#39;, &#39;palette&#39; (rename to &#39;values&#39;) to
+##   &#39;tm_scale_intervals(&lt;HERE&gt;)&#39;
+## [v3-&gt;v4] `tm_polygons()`: migrate the argument(s) related to the legend of the visual
+## variable `fill` namely &#39;title&#39; to &#39;fill.legend = tm_legend(&lt;HERE&gt;)&#39;
+## [v3-&gt;v4] `tm_layout()`: use `tm_title()` instead of `tm_layout(title = )`
+## [cols4all] color palettes: use palettes from the R package cols4all. Run
+## `cols4all::c4a_gui()` to explore them. The old palette name &quot;Purples&quot; is named
+## &quot;brewer.purples&quot;
+## Multiple palettes called &quot;purples&quot; found: &quot;brewer.purples&quot;, &quot;matplotlib.purples&quot;. The first one, &quot;brewer.purples&quot;, is returned.</code></pre>
+<pre><code>## Warning: Number of levels of the variable assigned to the aesthetic &quot;fill&quot; of the layer
+## &quot;polygons&quot; is 34, which is larger than n.max (which is 30), so levels are combined.</code></pre>
+<pre><code>## [plot mode] fit legend/component: Some legend items or map compoments do not fit well,
+## and are therefore rescaled.
+## ℹ Set the tmap option `component.autoscale = FALSE` to disable rescaling.</code></pre>
+<p><img src="vecteurs_files/figure-html/unnamed-chunk-10-1.png" alt="" width="672" /></p>
 </div>
 <div id="schéma" class="section level1">
 <h1>Schéma</h1>

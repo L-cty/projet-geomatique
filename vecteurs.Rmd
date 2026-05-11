@@ -41,29 +41,7 @@ iris_sd <- st_transform(iris_sd, 2154)
 commune_sd <- st_union(iris_sd)
 ```
 
-# Création du buffer
-
-```{r}
-buffer_sd <- st_buffer(
-  commune_sd,
-  dist = 500
-)
-```
-
-# Carte
-
-```{r}
-plot(st_geometry(commune_sd))
-
-plot(
-  st_geometry(buffer_sd),
-  add = TRUE,
-  border = "red",
-  lwd = 2
-)
-```
-
-Carte des inégalités de revenus : 
+# Carte des inégalités de revenus : 
 
 ```{r}
 library(sf)
@@ -128,7 +106,7 @@ tm_shape(jointure) +
 
    À l’inverse, les zones les plus pauvres, figurées en jaune clair ou beige, se situent majoritairement dans des secteurs centraux et dans certaines parties du nord et de l’est. Ces quartiers présentent des revenus médians nettement inférieurs de de 13 950€ à environ 14 890€.  Entre ces deux extrêmes, une large palette de teintes intermédiaires révèle des zones de transition, où les niveaux de vie sont moyens. Ces espaces jouent un rôle de tampon entre les quartiers les plus favorisés et les plus défavorisés, illustrant la complexité du tissu urbain.
 
-Carte buffer 1km :    
+# Carte buffer 1km :    
    
 ```{r}
 library(sf)
@@ -195,8 +173,40 @@ En parallèle, les zones les plus pauvres à l’intérieur du cercle sont nombr
 
    Ce qui ressort particulièrement de cette carte, c’est la coexistence immédiate de situations sociales opposées dans un espace restreint. Le buffer révèle une proximité spatiale entre richesse et pauvreté, ce qui peut engendrer des contrastes visibles dans le paysage urbain, mais aussi des enjeux en termes de cohésion sociale. Enfin, la limite circulaire elle-même permet de souligner que les dynamiques socio-économiques ne sont pas uniquement périphériques, mais qu’elles s’inscrivent pleinement dans le cœur de la ville. Le centre apparaît ainsi comme un espace fragmenté et complexe, où se superposent différentes réalités sociales. En somme, cette carte offre une lecture fine de la distribution des revenus dans un espace ciblé, mettant en évidence la diversité et les inégalités qui structurent le centre urbain.
 
+# Carte des inégalités internes 
+   
+```{r}
+library(sf)
+library(tmap)
+library(dplyr)
 
-![](index_files/figure-html/inegalites_internes.png)
+# Lecture des données
+revenus <- st_read("data/revenus.gpkg")
+
+# Filtrage Saint-Denis
+jointure_sd <- jointure |>
+  filter(
+    Nom_Officie.7 == "['Saint-Denis']"
+  )
+
+# Carte des inégalités
+tm_shape(jointure_sd) +
+  tm_polygons(
+    col = "DISP_GI21",
+    palette = "Reds",
+    style = "quantile",
+    n = 5,
+    title = "Indice de Gini"
+  ) +
+  tm_layout(
+    title = "Inégalités internes par IRIS à Saint-Denis (2021)",
+    legend.outside = TRUE
+  )
+```
+   
+   
+   
+   
    La carte des inégalités internes par IRIS, mesurée à l’aide de l’indice de Gini, apporte un éclairage complémentaire sur la structuration sociale de l’espace urbain. L’analyse est réalisée à l’échelle des IRIS (Îlots Regroupés pour l’Information Statistique), qui sont des unités spatiales définies par l’INSEE. Chaque IRIS regroupe en moyenne environ 2 000 habitants et constitue une échelle pertinente pour observer les inégalités à l’intérieur d’une commune. Elle met en évidence les écarts de revenus au sein même des quartiers, grâce à un dégradé de couleurs allant des teintes claires (faibles inégalités, autour de 0,226) aux teintes foncées (fortes inégalités, jusqu’à 0,385).
    
    L’indice de Gini est un indicateur statistique qui mesure le niveau d’inégalité des revenus au sein d’une population. Il varie entre 0 et 1 : une valeur proche de 0 signifie que les revenus sont très homogènes (peu d’écarts entre les habitants), tandis qu’une valeur proche de 1 indique de fortes inégalités. Dans le cadre de cette carte, cet indicateur est particulièrement utile car il permet de comprendre non seulement où se situent les quartiers pauvres ou riches, mais aussi dans quels espaces les écarts de revenus sont les plus importants.
@@ -205,13 +215,47 @@ En parallèle, les zones les plus pauvres à l’intérieur du cercle sont nombr
    
    Cette carte montre ainsi que la fragmentation socio-spatiale ne se limite pas à une simple opposition entre quartiers riches et pauvres. Elle révèle également des contrastes internes importants, notamment dans les espaces centraux où se combinent mixité sociale et fortes inégalités. L’indice de Gini permet donc de mettre en évidence une fragmentation plus fine, à l’intérieur même des quartiers, et pas seulement entre eux.
 
+# Carte du taux de pauvreté
+
+```{r}
+# Carte du taux de pauvreté
+tm_shape(jointure_sd) +
+  tm_polygons(
+    col = "DISP_TP6021",
+    palette = "Reds",
+    title = "Taux de pauvreté (%)",
+    style = "quantile",
+    n = 5
+  ) +
+  tm_layout(
+    title = "Taux de pauvreté par IRIS — Saint-Denis (2021)",
+    legend.outside = TRUE
+  )
+
+```
 
 
-![](index_files/figure-html/taux_pauvrete.png)
    La carte représentant le taux de pauvreté par IRIS en 2021 à Saint-Denis met en évidence une forte disparité spatiale des situations sociales au sein de la commune. Comme pour la carte précédente, l’utilisation des IRIS permet d’analyser les écarts de revenus à une échelle fine, au plus près des réalités locales. 
    
    Réalisée sous forme de carte choroplèthe, elle utilise un dégradé de couleurs allant des teintes les plus claires, correspondant à des taux de pauvreté faibles (autour de 25 %), aux teintes les plus foncées, indiquent des niveaux très élevés pouvant atteindre 49 %. L’observation de la carte montre que les taux de pauvreté les plus élevés se concentrent principalement dans les quartiers situés au sud de la commune, ainsi que dans certaines zones centrales et à l’ouest. Ces espaces apparaissent nettement plus touchés par la précarité. À l’inverse, les taux les plus faibles se localisent davantage au nord et au nord-est, où les conditions de vie semblent relativement plus favorables. Cette répartition traduit une géographie marquée de la pauvreté, avec une concentration des populations les plus modestes dans certains secteurs. Ces écarts importants révèlent des dynamiques de ségrégation, où les populations en difficulté tendent à se regrouper dans des quartiers spécifiques, tandis que d’autres zones apparaissent plus favorisées. Cette organisation spatiale met clairement en évidence une fragmentation socio-spatiale à l’échelle de la commune.
+   
+# Carte des revenus sociaux
 
+```{r}
+# Carte des revenus sociaux
+tm_shape(jointure_sd) +
+  tm_polygons(
+    col = "DISP_PPSOC21",
+    palette = "Purples",
+    style = "quantile",
+    n = 5,
+    title = "Part des revenus sociaux"
+  ) +
+  tm_layout(
+    title = "Part des revenus sociaux par IRIS",
+    legend.outside = TRUE
+  )
+```
 
 
 # Schéma

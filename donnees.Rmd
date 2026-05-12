@@ -47,29 +47,65 @@ plot(st_geometry(iris_sd))
 ```
 
 
+
 Dans le cadre de notre analyse des inégalités socio-spatiales à Saint Denis, nous avons mobilisé plusieurs types de données : 
 
 Contours des IRIS (IGN) :
 
-Il s’agit de données spatiales vectorielles (format shapefile .shp ou GeoPackage .gpkg) fournies par l’IGN. Ces données représentent les limites des IRIS (Îlots Regroupés pour l’Information Statistique), qui sont des unités spatiales infra-communales. Chaque IRIS correspond à une zone d’environ 2 000 habitants, ce qui permet une analyse fine des phénomènes sociaux à l’intérieur d’une commune. Ces contours servent de support cartographique pour représenter les indicateurs socio-économiques.
+source : 
+IGN Institut national de l’information géographique et forestière)
+- INSEE (définition des IRIS)
+https://cartes.gouv.fr/rechercher-une-donnee/dataset/IGNF_CONTOURS-IRIS
+https://data.seinesaintdenis.fr/explore/dataset/iris-seine-saint-denis/export/?disjunctive.reg_name&disjunctive.dep_name&disjunctive.arrdep_name&disjunctive.ze2020_name&disjunctive.epci_name&disjunctive.ept_name&disjunctive.com_name&disjunctive.com_arm_name&disjunctive.iris_name&disjunctive.bv2022_name
 
-
+Type de données : 
+- Données géographiques vectorielles
+- Polygones représentant les IRIS (unités statistiques infra-communales)
+Format : 
+- Shapefile (.shp)
+- GeoPackage (.gpkg)
+Emprise spatiale
+- Commune de Saint-Denis (Seine-Saint-Denis)
+- Découpage en IRIS (2 000 habitants en moyenne par unité)
+ Contenu / variables
+- Code IRIS (identifiant unique)
+- Nom de l’IRIS
+- Géométrie (polygones)
+- Données administratives associées
+Ces données permettent de représenter précisément les limites des quartiers statistiques et de spatialiser les indicateurs socio-économiques à l'échelle communale.
+ 
 Base Filosofi (INSEE) :
+ Source
+- INSEE (Fichier Localisé Social et Fiscal - Filosofi)
+https://www.insee.fr/fr/statistiques/8229323
+https://www.insee.fr/fr/statistiques/8735162?sommaire=8735243
 
-Il s’agit de données statistiques attributaires (format .csv ou .xlsx) produites par l’INSEE. Ces données permettent de mesurer précisément les inégalités socio-économiques entre les différents quartiers. Cette base fournit des informations détaillées sur les revenus des ménages à l’échelle des IRIS, telles que :
-- le revenu médian
-- le taux de pauvreté
-- l’indice de Gini (inégalités de revenus)
-
+Type de données
+- Données statistiques attributaires
+- Mesures socio-économiques agrégées à l’échelle des IRIS
+Format
+- CSV (.csv)
+- Excel (.xlsx)
+Emprise spatiale
+- IRIS de la commune de Saint-Denis
+- Données localisées à l’échelle infra-communale
+Variables principales
+- Revenu médian disponible (€) → niveau de vie des habitants
+- Taux de pauvreté (%) → proportion de population sous le seuil de pauvreté
+- Indice de Gini (0 à 1) → mesure des inégalités de revenus au sein d’un IRIS
+Ces données permettent de quantifier les écarts socio-économiques entre les différents quartiers de la commune. 
 
 Traitement des données avec RStudio :
+Les données ont été traitées sous RStudio afin de croiser information spatiale et statistique.
 
-Les données ont été traitées à l’aide de R, en utilisant des formats comme shp,  csv et xlsx.     Cet outil permet ainsi de croiser les données spatiales et statistiques afin de visualiser et analyser les inégalités de revenus dans l’espace.
+Étapes principales :
+- Import des données IRIS (vecteur)
+- Import des données Filosofi (table attributaire)
+- Harmonisation des identifiants IRIS
+- Jointure spatiale / attributaire
+- Nettoyage et vérification des données
+- Classification des variables pour la cartographie (discrétisation)
 
-Le traitement consiste à :
-
-- Réaliser une jointure entre les données IRIS (géométrie) et les données Filosofi (revenus)
-- Produire des cartes choroplèthes
-- Analyser la répartition spatiale des indicateurs
+Ce traitement rend possible la visualisation spatiale des inégalités de revenus et leurs analyses à différentes échelles. 
 
 

@@ -308,9 +308,16 @@ r_mask &lt;- mask(r_crop, vect(commune_sd))
 plotRGB(r_mask, r=1, g=2, b=3, stretch=&quot;lin&quot;,
         main=&quot;Saint-Denis - Image Sentinel-2&quot;)</code></pre>
 <p><img src="rasters_files/figure-html/unnamed-chunk-2-1.png" alt="" width="672" /></p>
-<p>Le raster est découpé selon les contours de la commune de
-Saint-Denis, d’abord par l’emprise (crop) puis par le masque exact de la
-commune (mask).</p>
+<p>Le raster satellite est d’abord découpé selon les limites
+administratives de la commune de Saint-Denis grâce aux opérations de
+crop puis de mask. Le crop permet de réduire l’image à l’emprise
+générale de la commune, tandis que le mask conserve uniquement les
+pixels situés à l’intérieur des limites exactes du territoire communal.
+L’image obtenue met en évidence un territoire fortement urbanisé et très
+dense. On observe une occupation du sol largement dominée par le bâti,
+les infrastructures et les réseaux de transpor. Cette forte densité
+urbaine traduit l’histoire industrielle et la forte pression foncière
+qui caractérisent la commune.</p>
 </div>
 <div id="géotraitement-3-conversion-en-niveaux-de-gris"
 class="section level2">
@@ -319,9 +326,18 @@ class="section level2">
 plot(r_gris, col = gray.colors(256),
      main = &quot;Image en niveaux de gris&quot;)</code></pre>
 <p><img src="rasters_files/figure-html/unnamed-chunk-3-1.png" alt="" width="672" /></p>
-<p>Les trois bandes de couleur (rouge, vert, bleu) sont fusionnées en
-une seule bande en calculant leur moyenne. Cela permet de simplifier
-l’image pour le seuillage.</p>
+<p>Les trois bandes spectrales rouge, verte et bleue de l’image
+satellite sont ensuite fusionnées en calculant leur moyenne afin de
+produire une image simplifiée en niveaux de gris. Chaque pixel obtient
+ainsi une valeur unique représentant son intensité lumineuse.</p>
+<p>Cette transformation permet de faciliter les traitements automatiques
+sur l’image. Les zones claires correspondent principalement à des
+surfaces plus réfléchissantes comme certains espaces ouverts ou
+végétalisés, tandis que les zones plus sombres renvoient davantage aux
+espaces fortement artificialisés et denses. La carte fait apparaître une
+forte continuité des surfaces urbaines sur l’ensemble du territoire
+communal, révélant l’importance du tissu bâti dans l’organisation
+spatiale de Saint-Denis..</p>
 </div>
 <div id="géotraitement-4-seuillage" class="section level2">
 <h2>Géotraitement 4 : Seuillage</h2>
@@ -331,10 +347,18 @@ plot(r_seuil,
      main = &quot;Seuillage : zones sombres vs claires&quot;,
      legend = FALSE)</code></pre>
 <p><img src="rasters_files/figure-html/unnamed-chunk-4-1.png" alt="" width="672" /></p>
-<p>Un seuil de 0.5 est appliqué pour créer un masque binaire : les
-pixels dont la valeur est inférieure à 0.5 correspondent aux zones
-sombres (bâti dense, ombres), les autres aux zones claires (végétation,
-espaces ouverts).</p>
+<p>Un seuil de 0,5 est appliqué sur l’image afin de produire un raster
+binaire. Les pixels dont la valeur est inférieure à ce seuil sont
+classés comme zones sombres, tandis que les autres correspondent aux
+zones plus claires.</p>
+<p>Cette opération permet de distinguer les espaces les plus denses et
+artificialisés des zones plus ouvertes. Les zones sombres identifiées
+sur la carte correspondent principalement au bâti dense, aux
+infrastructures urbaines et aux espaces fortement minéralisés. À
+l’inverse, les zones plus claires traduisent la présence d’espaces
+végétalisés ou moins urbanisés. Cette répartition confirme le caractère
+très urbanisé de Saint-Denis, avec une forte concentration d’espaces
+bâtis continus.</p>
 </div>
 <div id="géotraitement-5-vectorisation" class="section level2">
 <h2>Géotraitement 5 : Vectorisation</h2>
@@ -346,13 +370,20 @@ mf_map(zones_sombres, col = &quot;darkgray&quot;)
 mf_map(iris_sd, add = TRUE, col = NA, border = &quot;blue&quot;, lwd = 2)
 mf_layout(&quot;Zones sombres (bâti) à Saint-Denis&quot;, &quot;Sentinel-2, IGN&quot;)</code></pre>
 <p><img src="rasters_files/figure-html/unnamed-chunk-5-1.png" alt="" width="672" /></p>
-<p>Le raster binaire est converti en polygones vectoriels. On ne
-conserve que les zones sombres (valeur = 1) qui correspondent aux
-espaces bâtis et aux zones denses de la commune.</p>
-<p>Bien que notre analyse repose principalement sur des données
-vectorielles, un traitement raster peut être réalisé à partir des
-données IRIS afin d’obtenir une représentation continue des
-inégalités.</p>
+<p>Le raster binaire est ensuite converti en polygones vectoriels afin
+d’isoler uniquement les zones sombres correspondant aux espaces bâtis et
+aux secteurs les plus denses de la commune. Cette opération de
+vectorisation permet de transformer les pixels en objets géographiques
+exploitables dans une analyse spatiale.</p>
+<p>La carte obtenue met clairement en évidence la prédominance des
+espaces urbanisés dans la commune. Les surfaces bâties apparaissent très
+présentes et relativement continues, traduisant une forte densité
+urbaine. Cette organisation spatiale permet de mieux comprendre certains
+contrastes socio-spatiaux observés dans les cartes de revenus et de
+pauvreté. Les secteurs les plus denses correspondent souvent à des
+espaces marqués par une forte concentration de logements collectifs et
+une occupation intense du sol, caractéristiques des territoires urbains
+populaires de la proche banlieue parisienne.</p>
 <p><img src="index_files/figure-html/schema_raster.png" /></p>
 <p>Dans un premier temps, les données vectorielles (polygones IRIS
 enrichis avec les variables issues de la base Filosofi de l’INSEE) sont

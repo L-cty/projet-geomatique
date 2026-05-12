@@ -1,5 +1,5 @@
 ---
-title: "Fragmentation socio-spatiale à Saint-Denis"
+title: "Fragmentations socio-spatiales à Saint-Denis"
 author: "Lylia"
 date: "2026-05-09"
 output: html_document

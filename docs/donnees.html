@@ -282,6 +282,7 @@ $(document).ready(function () {
 
 
 <pre class="r"><code>library(sf)</code></pre>
+<pre><code>## Linking to GEOS 3.14.1, GDAL 3.12.1, PROJ 9.7.1; sf_use_s2() is TRUE</code></pre>
 <div id="lecture-des-données" class="section level1">
 <h1>Lecture des données</h1>
 <pre class="r"><code>iris &lt;- st_read(&quot;data/iris.shp&quot;)</code></pre>
@@ -423,37 +424,75 @@ class="uri">https://cartes.gouv.fr/rechercher-une-donnee/dataset/IGNF_CONTOURS-I
 <a
 href="https://data.seinesaintdenis.fr/explore/dataset/iris-seine-saint-denis/export/?disjunctive.reg_name&amp;disjunctive.dep_name&amp;disjunctive.arrdep_name&amp;disjunctive.ze2020_name&amp;disjunctive.epci_name&amp;disjunctive.ept_name&amp;disjunctive.com_name&amp;disjunctive.com_arm_name&amp;disjunctive.iris_name&amp;disjunctive.bv2022_name"
 class="uri">https://data.seinesaintdenis.fr/explore/dataset/iris-seine-saint-denis/export/?disjunctive.reg_name&amp;disjunctive.dep_name&amp;disjunctive.arrdep_name&amp;disjunctive.ze2020_name&amp;disjunctive.epci_name&amp;disjunctive.ept_name&amp;disjunctive.com_name&amp;disjunctive.com_arm_name&amp;disjunctive.iris_name&amp;disjunctive.bv2022_name</a></p>
-<p>Type de données : - Données géographiques vectorielles - Polygones
-représentant les IRIS (unités statistiques infra-communales) Format : -
-Shapefile (.shp) - GeoPackage (.gpkg) Emprise spatiale - Commune de
-Saint-Denis (Seine-Saint-Denis) - Découpage en IRIS (2 000 habitants en
-moyenne par unité) Contenu / variables - Code IRIS (identifiant unique)
-- Nom de l’IRIS - Géométrie (polygones) - Données administratives
-associées Ces données permettent de représenter précisément les limites
-des quartiers statistiques et de spatialiser les indicateurs
+<p>Type de données :</p>
+<ul>
+<li>Données géographiques vectorielles</li>
+<li>Polygones représentant les IRIS (unités statistiques
+infra-communales)</li>
+</ul>
+<p>Format :</p>
+<ul>
+<li>Shapefile (.shp)</li>
+<li>GeoPackage (.gpkg)</li>
+</ul>
+<p>Emprise spatiale :</p>
+<ul>
+<li>Commune de Saint-Denis (Seine-Saint-Denis)</li>
+<li>Découpage en IRIS (2 000 habitants en moyenne par unité) Contenu /
+variables</li>
+<li>Code IRIS (identifiant unique)</li>
+<li>Nom de l’IRIS</li>
+<li>Géométrie (polygones)</li>
+<li>Données administratives associées</li>
+</ul>
+<p>Ces données permettent de représenter précisément les limites des
+quartiers statistiques et de spatialiser les indicateurs
 socio-économiques à l’échelle communale.</p>
-<p>Base Filosofi (INSEE) : Source - INSEE (Fichier Localisé Social et
-Fiscal - Filosofi) <a
+<p>Base Filosofi (INSEE) :</p>
+<p>Source :</p>
+<ul>
+<li>INSEE (Fichier Localisé Social et Fiscal - Filosofi) <a
 href="https://www.insee.fr/fr/statistiques/8229323"
 class="uri">https://www.insee.fr/fr/statistiques/8229323</a> <a
 href="https://www.insee.fr/fr/statistiques/8735162?sommaire=8735243"
-class="uri">https://www.insee.fr/fr/statistiques/8735162?sommaire=8735243</a></p>
-<p>Type de données - Données statistiques attributaires - Mesures
-socio-économiques agrégées à l’échelle des IRIS Format - CSV (.csv) -
-Excel (.xlsx) Emprise spatiale - IRIS de la commune de Saint-Denis -
-Données localisées à l’échelle infra-communale Variables principales -
-Revenu médian disponible (€) → niveau de vie des habitants - Taux de
-pauvreté (%) → proportion de population sous le seuil de pauvreté -
-Indice de Gini (0 à 1) → mesure des inégalités de revenus au sein d’un
-IRIS Ces données permettent de quantifier les écarts socio-économiques
+class="uri">https://www.insee.fr/fr/statistiques/8735162?sommaire=8735243</a></li>
+</ul>
+<p>Type de données :</p>
+<ul>
+<li>Données statistiques attributaires</li>
+<li>Mesures socio-économiques agrégées à l’échelle des IRIS</li>
+</ul>
+<p>Format :</p>
+<ul>
+<li>CSV (.csv)</li>
+<li>Excel (.xlsx)</li>
+</ul>
+<p>Emprise spatiale :</p>
+<ul>
+<li>IRIS de la commune de Saint-Denis</li>
+<li>Données localisées à l’échelle infra-communale Variables
+principales</li>
+<li>Revenu médian disponible (€) → niveau de vie des habitants</li>
+<li>Taux de pauvreté (%) → proportion de population sous le seuil de
+pauvreté</li>
+<li>Indice de Gini (0 à 1) → mesure des inégalités de revenus au sein
+d’un IRIS</li>
+</ul>
+<p>Ces données permettent de quantifier les écarts socio-économiques
 entre les différents quartiers de la commune.</p>
-<p>Traitement des données avec RStudio : Les données ont été traitées
-sous RStudio afin de croiser information spatiale et statistique.</p>
-<p>Étapes principales : - Import des données IRIS (vecteur) - Import des
-données Filosofi (table attributaire) - Harmonisation des identifiants
-IRIS - Jointure spatiale / attributaire - Nettoyage et vérification des
-données - Classification des variables pour la cartographie
-(discrétisation)</p>
+<p>Traitement des données avec RStudio :</p>
+<p>Les données ont été traitées sous RStudio afin de croiser information
+spatiale et statistique.</p>
+<p>Étapes principales :</p>
+<ul>
+<li>Import des données IRIS (vecteur)</li>
+<li>Import des données Filosofi (table attributaire)</li>
+<li>Harmonisation des identifiants IRIS</li>
+<li>Jointure spatiale / attributaire</li>
+<li>Nettoyage et vérification des données</li>
+<li>Classification des variables pour la cartographie
+(discrétisation)</li>
+</ul>
 <p>Ce traitement rend possible la visualisation spatiale des inégalités
 de revenus et leurs analyses à différentes échelles.</p>
 </div>

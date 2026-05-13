@@ -50,11 +50,12 @@ plot(st_geometry(iris_sd))
 
 Dans le cadre de notre analyse des inégalités socio-spatiales à Saint Denis, nous avons mobilisé plusieurs types de données : 
 
-Contours des IRIS (IGN) :
+## Contours des IRIS (IGN) :
 
-source : 
-IGN Institut national de l’information géographique et forestière)
+Source : IGN Institut national de l’information géographique et forestière)
+
 - INSEE (définition des IRIS)
+
 https://cartes.gouv.fr/rechercher-une-donnee/dataset/IGNF_CONTOURS-IRIS
 https://data.seinesaintdenis.fr/explore/dataset/iris-seine-saint-denis/export/?disjunctive.reg_name&disjunctive.dep_name&disjunctive.arrdep_name&disjunctive.ze2020_name&disjunctive.epci_name&disjunctive.ept_name&disjunctive.com_name&disjunctive.com_arm_name&disjunctive.iris_name&disjunctive.bv2022_name
 
@@ -80,7 +81,7 @@ Emprise spatiale :
 
 Ces données permettent de représenter précisément les limites des quartiers statistiques et de spatialiser les indicateurs socio-économiques à l'échelle communale.
  
-Base Filosofi (INSEE) :
+## Base Filosofi (INSEE) :
 
  Source :
  
@@ -113,7 +114,7 @@ Traitement des données avec RStudio :
 
 Les données ont été traitées sous RStudio afin de croiser information spatiale et statistique.
 
-Étapes principales :
+## Étapes principales :
 
 - Import des données IRIS (vecteur)
 - Import des données Filosofi (table attributaire)

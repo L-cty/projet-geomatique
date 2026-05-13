@@ -282,7 +282,6 @@ $(document).ready(function () {
 
 
 <pre class="r"><code>library(sf)</code></pre>
-<pre><code>## Linking to GEOS 3.14.1, GDAL 3.12.1, PROJ 9.7.1; sf_use_s2() is TRUE</code></pre>
 <div id="lecture-des-données" class="section level1">
 <h1>Lecture des données</h1>
 <pre class="r"><code>iris &lt;- st_read(&quot;data/iris.shp&quot;)</code></pre>
@@ -416,9 +415,14 @@ $(document).ready(function () {
 <p><img src="donnees_files/figure-html/unnamed-chunk-6-1.png" alt="" width="672" /></p>
 <p>Dans le cadre de notre analyse des inégalités socio-spatiales à Saint
 Denis, nous avons mobilisé plusieurs types de données :</p>
-<p>Contours des IRIS (IGN) :</p>
-<p>source : IGN Institut national de l’information géographique et
-forestière) - INSEE (définition des IRIS) <a
+<div id="contours-des-iris-ign" class="section level2">
+<h2>Contours des IRIS (IGN) :</h2>
+<p>Source : IGN Institut national de l’information géographique et
+forestière)</p>
+<ul>
+<li>INSEE (définition des IRIS)</li>
+</ul>
+<p><a
 href="https://cartes.gouv.fr/rechercher-une-donnee/dataset/IGNF_CONTOURS-IRIS"
 class="uri">https://cartes.gouv.fr/rechercher-une-donnee/dataset/IGNF_CONTOURS-IRIS</a>
 <a
@@ -448,7 +452,9 @@ variables</li>
 <p>Ces données permettent de représenter précisément les limites des
 quartiers statistiques et de spatialiser les indicateurs
 socio-économiques à l’échelle communale.</p>
-<p>Base Filosofi (INSEE) :</p>
+</div>
+<div id="base-filosofi-insee" class="section level2">
+<h2>Base Filosofi (INSEE) :</h2>
 <p>Source :</p>
 <ul>
 <li>INSEE (Fichier Localisé Social et Fiscal - Filosofi) <a
@@ -483,7 +489,9 @@ entre les différents quartiers de la commune.</p>
 <p>Traitement des données avec RStudio :</p>
 <p>Les données ont été traitées sous RStudio afin de croiser information
 spatiale et statistique.</p>
-<p>Étapes principales :</p>
+</div>
+<div id="étapes-principales" class="section level2">
+<h2>Étapes principales :</h2>
 <ul>
 <li>Import des données IRIS (vecteur)</li>
 <li>Import des données Filosofi (table attributaire)</li>
@@ -495,6 +503,7 @@ spatiale et statistique.</p>
 </ul>
 <p>Ce traitement rend possible la visualisation spatiale des inégalités
 de revenus et leurs analyses à différentes échelles.</p>
+</div>
 </div>
 
 
